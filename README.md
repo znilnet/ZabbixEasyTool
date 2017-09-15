@@ -1,6 +1,6 @@
 WORK IN PROGRESS!
 
-#ZabbixEasyTool
+# ZabbixEasyTool
 
 Is a Tool that can be started at every Windows Host which ist monitored by a Zabbix Server.
 After the start it can be called up via its icon in the info area of the taskbar.
