@@ -41,7 +41,7 @@
 				<property name="Top" vt="Int8">8</property>
 				<property name="Width" vt="Int16">396</property>
 				<property name="Height" vt="Int16">256</property>
-				<property name="ActivePage" vt="Ident">TabSheet1</property>
+				<property name="ActivePage" vt="Ident">Acknowledge</property>
 				<property name="Constraints.MaxWidth" vt="Int32">1409482752</property>
 				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -171,30 +171,6 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TALabel" name="Label4">
-							<properties>
-								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">5</property>
-								<property name="Width" vt="Int16">147</property>
-								<property name="Height" vt="Int8">18</property>
-								<property name="AutoSize" vt="False">False</property>
-								<property name="Caption" vt="String">Credentials</property>
-								<property name="Color" vt="Ident">clBtnHighlight</property>
-								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
-								<property name="Font.Color" vt="Ident">clBlack</property>
-								<property name="Font.Height" vt="Int8">-16</property>
-								<property name="Font.Name" vt="String">Arial</property>
-								<property name="Font.Style" vt="Set">fsUnderline</property>
-								<property name="ParentColor" vt="False">False</property>
-								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">7</property>
-								<property name="HaveVariable" vt="False">False</property>
-								<property name="CtrlStyle" vt="Int32">1342308608</property>
-								<property name="CtrlExStyle" vt="Int8">0</property>
-								<property name="Resizing" vt="Set"/>
-							</properties>
-							<components/>
-						</object>
 						<object type="TALabel" name="Label5">
 							<properties>
 								<property name="Left" vt="Int16">242</property>
@@ -205,7 +181,7 @@
 								<property name="Caption" vt="String">not tested</property>
 								<property name="Color" vt="Ident">clSilver</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">8</property>
+								<property name="TabOrder" vt="Int8">7</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1350697729</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -217,44 +193,189 @@
 				</object>
 				<object type="TTabSheet" name="FormSetupTabSheetMaintenance">
 					<properties>
-						<property name="Caption" vt="String">Maintenance 1</property>
+						<property name="Caption" vt="String">Maintenance</property>
 					</properties>
 					<components>
-						<object type="TALabel" name="Label6">
+						<object type="TALabel" name="Label7">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">5</property>
-								<property name="Width" vt="Int16">147</property>
-								<property name="Height" vt="Int8">18</property>
+								<property name="Top" vt="Int8">14</property>
+								<property name="Width" vt="Int8">82</property>
+								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
-								<property name="Caption" vt="String">Durations</property>
+								<property name="Caption" vt="String">Name Prefix</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
-								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
-								<property name="Font.Color" vt="Ident">clBlack</property>
-								<property name="Font.Height" vt="Int8">-16</property>
-								<property name="Font.Name" vt="String">Arial</property>
-								<property name="Font.Style" vt="Set">fsUnderline</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">0</property>
 								<property name="HaveVariable" vt="False">False</property>
-								<property name="CtrlStyle" vt="Int32">1342308608</property>
+								<property name="CtrlStyle" vt="Int32">1342308610</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
 								<property name="Resizing" vt="Set"/>
 							</properties>
 							<components/>
 						</object>
-						<object type="TAList" name="List1">
+						<object type="TAInput" name="Input4">
+							<properties>
+								<property name="Left" vt="Int8">92</property>
+								<property name="Top" vt="Int8">11</property>
+								<property name="Width" vt="Int16">289</property>
+								<property name="Height" vt="Int8">24</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="Text" vt="String">ZabbixEasyTool</property>
+								<property name="CtrlStyle" vt="Int32">1342374016</property>
+								<property name="CtrlExStyle" vt="Int16">512</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TALabel" name="Label8">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">29</property>
-								<property name="Width" vt="Int8">121</property>
-								<property name="Height" vt="Int16">182</property>
+								<property name="Top" vt="Int8">46</property>
+								<property name="Width" vt="Int8">82</property>
+								<property name="Height" vt="Int8">20</property>
+								<property name="AutoSize" vt="False">False</property>
+								<property name="Caption" vt="String">Description</property>
+								<property name="Color" vt="Ident">clBtnHighlight</property>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308610</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAInput" name="Input5">
+							<properties>
+								<property name="Left" vt="Int8">92</property>
+								<property name="Top" vt="Int8">43</property>
+								<property name="Width" vt="Int16">289</property>
+								<property name="Height" vt="Int8">24</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="Text" vt="String">%USERDOMAIN%\%USERNAME%</property>
+								<property name="CtrlStyle" vt="Int32">1342374016</property>
+								<property name="CtrlExStyle" vt="Int16">512</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAList" name="List1">
+							<properties>
+								<property name="Left" vt="Int8">12</property>
+								<property name="Top" vt="Int8">99</property>
+								<property name="Width" vt="Int8">73</property>
+								<property name="Height" vt="Int8">116</property>
 								<property name="ItemHeight" vt="Int8">16</property>
-								<property name="TabOrder" vt="Int8">1</property>
-								<property name="CtrlStyle" vt="Int32">1352859651</property>
+								<property name="Items.Strings" vt="List">
+									<list>
+										<li vt="String">0,5</li>
+										<li vt="String">1</li>
+										<li vt="String">12</li>
+										<li vt="String">18</li>
+										<li vt="String">2</li>
+										<li vt="String">24</li>
+										<li vt="String">4</li>
+										<li vt="String">48</li>
+										<li vt="String">72</li>
+										<li vt="String">8</li>
+									</list>
+								</property>
+								<property name="TabOrder" vt="Int8">4</property>
+								<property name="CtrlStyle" vt="Int32">1344471041</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAButton" name="Button2">
+							<properties>
+								<property name="Left" vt="Int8">92</property>
+								<property name="Top" vt="Int16">131</property>
+								<property name="Width" vt="Int8">75</property>
+								<property name="Height" vt="Int8">24</property>
+								<property name="Caption" vt="String">Add</property>
+								<property name="TabOrder" vt="Int8">5</property>
+								<property name="Color" vt="Ident">clBtnFace</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAInput" name="Input6">
+							<properties>
+								<property name="Left" vt="Int8">92</property>
+								<property name="Top" vt="Int8">99</property>
+								<property name="Width" vt="Int8">35</property>
+								<property name="Height" vt="Int8">24</property>
+								<property name="TabOrder" vt="Int8">6</property>
+								<property name="Text" vt="String">3600</property>
+								<property name="CtrlStyle" vt="Int32">1342382208</property>
+								<property name="CtrlExStyle" vt="Int16">512</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAButton" name="Button3">
+							<properties>
+								<property name="Left" vt="Int8">92</property>
+								<property name="Top" vt="Int16">163</property>
+								<property name="Width" vt="Int8">75</property>
+								<property name="Height" vt="Int8">24</property>
+								<property name="Caption" vt="String">Delete</property>
+								<property name="TabOrder" vt="Int8">7</property>
+								<property name="Color" vt="Ident">clBtnFace</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TALabel" name="Label6">
+							<properties>
+								<property name="Left" vt="Int8">12</property>
+								<property name="Top" vt="Int8">77</property>
+								<property name="Width" vt="Int8">73</property>
+								<property name="Height" vt="Int8">22</property>
+								<property name="AutoSize" vt="False">False</property>
+								<property name="Caption" vt="String">Times</property>
+								<property name="Color" vt="Ident">cl3DLight</property>
+								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clBlack</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Arial</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">8</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308609</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACombo" name="Combo1">
+							<properties>
+								<property name="Left" vt="Int16">132</property>
+								<property name="Top" vt="Int8">99</property>
+								<property name="Width" vt="Int8">33</property>
+								<property name="Height" vt="Int8">24</property>
+								<property name="ItemHeight" vt="Int8">16</property>
+								<property name="TabOrder" vt="Int8">9</property>
+								<property name="Text" vt="String">m</property>
+								<property name="Items.Strings" vt="List">
+									<list>
+										<li vt="String">s</li>
+										<li vt="String">m</li>
+										<li vt="String">h</li>
+										<li vt="String">d</li>
+									</list>
+								</property>
+								<property name="CtrlStyle" vt="Int32">1342374466</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
 							</properties>
 							<components/>
 						</object>
@@ -271,41 +392,17 @@
 						<property name="ParentFont" vt="False">False</property>
 					</properties>
 					<components>
-						<object type="TALabel" name="FormSetupTriggerLabelColors">
-							<properties>
-								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">5</property>
-								<property name="Width" vt="Int16">147</property>
-								<property name="Height" vt="Int8">18</property>
-								<property name="AutoSize" vt="False">False</property>
-								<property name="Caption" vt="String">Trigger severities</property>
-								<property name="Color" vt="Ident">clBtnHighlight</property>
-								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
-								<property name="Font.Color" vt="Ident">clBlack</property>
-								<property name="Font.Height" vt="Int8">-16</property>
-								<property name="Font.Name" vt="String">Arial</property>
-								<property name="Font.Style" vt="Set">fsUnderline</property>
-								<property name="ParentColor" vt="False">False</property>
-								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">0</property>
-								<property name="HaveVariable" vt="False">False</property>
-								<property name="CtrlStyle" vt="Int32">1342308608</property>
-								<property name="CtrlExStyle" vt="Int8">0</property>
-								<property name="Resizing" vt="Set"/>
-							</properties>
-							<components/>
-						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelNotclassified">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">31</property>
+								<property name="Top" vt="Int8">23</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">Not classified</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">1</property>
+								<property name="TabOrder" vt="Int8">0</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308610</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -317,10 +414,10 @@
 						<object type="TAInput" name="FormSetupTriggerInputNotclassified">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int8">28</property>
+								<property name="Top" vt="Int8">20</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
-								<property name="TabOrder" vt="Int8">2</property>
+								<property name="TabOrder" vt="Int8">1</property>
 								<property name="Text" vt="String">Not classified</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -331,13 +428,13 @@
 						<object type="TALabel" name="FormSetupTriggerLabelColorNotclassified">
 							<properties>
 								<property name="Left" vt="Int16">284</property>
-								<property name="Top" vt="Int8">28</property>
+								<property name="Top" vt="Int8">20</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clDefault</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">3</property>
+								<property name="TabOrder" vt="Int8">2</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -348,7 +445,7 @@
 						<object type="TAInput" name="FormSetupTriggerInputColorNotclassified">
 							<properties>
 								<property name="Left" vt="Int16">316</property>
-								<property name="Top" vt="Int8">28</property>
+								<property name="Top" vt="Int8">20</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -357,7 +454,7 @@
 								<property name="Font.Name" vt="String">Courier New</property>
 								<property name="Font.Style" vt="Set"/>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">4</property>
+								<property name="TabOrder" vt="Int8">3</property>
 								<property name="Text" vt="String">97AAB3</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -368,14 +465,14 @@
 						<object type="TALabel" name="FormSetupTriggerLabelInformation">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">63</property>
+								<property name="Top" vt="Int8">55</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">Infomation</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">5</property>
+								<property name="TabOrder" vt="Int8">4</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308610</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -386,10 +483,10 @@
 						<object type="TAInput" name="FormSetupTriggerInputInformation">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int8">60</property>
+								<property name="Top" vt="Int8">52</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
-								<property name="TabOrder" vt="Int8">6</property>
+								<property name="TabOrder" vt="Int8">5</property>
 								<property name="Text" vt="String">Information</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -400,13 +497,13 @@
 						<object type="TALabel" name="FormSetupTriggerLabelColorInformation">
 							<properties>
 								<property name="Left" vt="Int16">284</property>
-								<property name="Top" vt="Int8">60</property>
+								<property name="Top" vt="Int8">52</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clGradientActiveCaption</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">7</property>
+								<property name="TabOrder" vt="Int8">6</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -417,7 +514,7 @@
 						<object type="TAInput" name="FormSetupTriggerInputColorInformation">
 							<properties>
 								<property name="Left" vt="Int16">316</property>
-								<property name="Top" vt="Int8">60</property>
+								<property name="Top" vt="Int8">52</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -426,7 +523,7 @@
 								<property name="Font.Name" vt="String">Courier New</property>
 								<property name="Font.Style" vt="Set"/>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">8</property>
+								<property name="TabOrder" vt="Int8">7</property>
 								<property name="Text" vt="String">7499FF</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -437,14 +534,14 @@
 						<object type="TALabel" name="FormSetupTriggerLabelWarning">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">95</property>
+								<property name="Top" vt="Int8">87</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">Warning</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">9</property>
+								<property name="TabOrder" vt="Int8">8</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308610</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -455,10 +552,10 @@
 						<object type="TAInput" name="FormSetupTriggerInputWarning">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int8">92</property>
+								<property name="Top" vt="Int8">84</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
-								<property name="TabOrder" vt="Int8">10</property>
+								<property name="TabOrder" vt="Int8">9</property>
 								<property name="Text" vt="String">Warning</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -469,13 +566,13 @@
 						<object type="TALabel" name="FormSetupTriggerLabelColorWarning">
 							<properties>
 								<property name="Left" vt="Int16">284</property>
-								<property name="Top" vt="Int8">92</property>
+								<property name="Top" vt="Int8">84</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clFuchsia</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">11</property>
+								<property name="TabOrder" vt="Int8">10</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -486,7 +583,7 @@
 						<object type="TAInput" name="FormSetupTriggerInputColorWarning">
 							<properties>
 								<property name="Left" vt="Int16">316</property>
-								<property name="Top" vt="Int8">92</property>
+								<property name="Top" vt="Int8">84</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -495,7 +592,7 @@
 								<property name="Font.Name" vt="String">Courier New</property>
 								<property name="Font.Style" vt="Set"/>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">12</property>
+								<property name="TabOrder" vt="Int8">11</property>
 								<property name="Text" vt="String">FFC859</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -506,14 +603,14 @@
 						<object type="TALabel" name="FormSetupTriggerLabelAverage">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">127</property>
+								<property name="Top" vt="Int8">119</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">Average</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">13</property>
+								<property name="TabOrder" vt="Int8">12</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308610</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -524,10 +621,10 @@
 						<object type="TAInput" name="FormSetupTriggerInputAverage">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int8">124</property>
+								<property name="Top" vt="Int8">116</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
-								<property name="TabOrder" vt="Int8">14</property>
+								<property name="TabOrder" vt="Int8">13</property>
 								<property name="Text" vt="String">Average</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -538,13 +635,13 @@
 						<object type="TALabel" name="FormSetupTriggerLabelColorAverage">
 							<properties>
 								<property name="Left" vt="Int16">284</property>
-								<property name="Top" vt="Int8">124</property>
+								<property name="Top" vt="Int8">116</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clYellow</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">15</property>
+								<property name="TabOrder" vt="Int8">14</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -555,7 +652,7 @@
 						<object type="TAInput" name="FormSetupTriggerInputColorAverage">
 							<properties>
 								<property name="Left" vt="Int16">316</property>
-								<property name="Top" vt="Int8">124</property>
+								<property name="Top" vt="Int8">116</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -564,7 +661,7 @@
 								<property name="Font.Name" vt="String">Courier New</property>
 								<property name="Font.Style" vt="Set"/>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">16</property>
+								<property name="TabOrder" vt="Int8">15</property>
 								<property name="Text" vt="String">FFA059</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -575,14 +672,14 @@
 						<object type="TALabel" name="FormSetupTriggerLabelHigh">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int16">159</property>
+								<property name="Top" vt="Int16">151</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">High</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">17</property>
+								<property name="TabOrder" vt="Int8">16</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308610</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -593,10 +690,10 @@
 						<object type="TAInput" name="FormSetupTriggerInputHigh">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int16">156</property>
+								<property name="Top" vt="Int16">148</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
-								<property name="TabOrder" vt="Int8">18</property>
+								<property name="TabOrder" vt="Int8">17</property>
 								<property name="Text" vt="String">High</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -607,13 +704,13 @@
 						<object type="TALabel" name="FormSetupTriggerLabelColorHigh">
 							<properties>
 								<property name="Left" vt="Int16">284</property>
-								<property name="Top" vt="Int16">156</property>
+								<property name="Top" vt="Int16">148</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clMaroon</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">19</property>
+								<property name="TabOrder" vt="Int8">18</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -624,7 +721,7 @@
 						<object type="TAInput" name="FormSetupTriggerInputColorHigh">
 							<properties>
 								<property name="Left" vt="Int16">316</property>
-								<property name="Top" vt="Int16">156</property>
+								<property name="Top" vt="Int16">148</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -633,7 +730,7 @@
 								<property name="Font.Name" vt="String">Courier New</property>
 								<property name="Font.Style" vt="Set"/>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">20</property>
+								<property name="TabOrder" vt="Int8">19</property>
 								<property name="Text" vt="String">E97659</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -644,14 +741,14 @@
 						<object type="TALabel" name="FormSetupTriggerLabelDisaster">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int16">191</property>
+								<property name="Top" vt="Int16">183</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">Disaster</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">21</property>
+								<property name="TabOrder" vt="Int8">20</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308610</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -662,10 +759,10 @@
 						<object type="TAInput" name="FormSetupTriggerInputDisaster">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int16">188</property>
+								<property name="Top" vt="Int16">180</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
-								<property name="TabOrder" vt="Int8">22</property>
+								<property name="TabOrder" vt="Int8">21</property>
 								<property name="Text" vt="String">Disaster</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -676,13 +773,13 @@
 						<object type="TALabel" name="FormSetupTriggerLabelColorDisaster">
 							<properties>
 								<property name="Left" vt="Int16">284</property>
-								<property name="Top" vt="Int16">188</property>
+								<property name="Top" vt="Int16">180</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clRed</property>
 								<property name="ParentColor" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">23</property>
+								<property name="TabOrder" vt="Int8">22</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -693,7 +790,7 @@
 						<object type="TAInput" name="FormSetupTriggerInputColorDisaster">
 							<properties>
 								<property name="Left" vt="Int16">316</property>
-								<property name="Top" vt="Int16">188</property>
+								<property name="Top" vt="Int16">180</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -702,7 +799,7 @@
 								<property name="Font.Name" vt="String">Courier New</property>
 								<property name="Font.Style" vt="Set"/>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">24</property>
+								<property name="TabOrder" vt="Int8">23</property>
 								<property name="Text" vt="String">E45959</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
@@ -712,30 +809,225 @@
 						</object>
 					</components>
 				</object>
-				<object type="TTabSheet" name="FormSetupTabSheetIntervals">
+				<object type="TTabSheet" name="FormSetupTabSheetChecks">
 					<properties>
-						<property name="Caption" vt="String">Intervals</property>
+						<property name="Caption" vt="String">Checks</property>
 						<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 						<property name="Font.Color" vt="Ident">clWindowText</property>
-						<property name="Font.Height" vt="Int8">-11</property>
-						<property name="Font.Name" vt="String">MS Sans Serif</property>
+						<property name="Font.Height" vt="Int8">-13</property>
+						<property name="Font.Name" vt="String">Arial</property>
 						<property name="Font.Style" vt="Set"/>
 						<property name="ParentFont" vt="False">False</property>
 					</properties>
-					<components/>
+					<components>
+						<object type="TALabel" name="Label9">
+							<properties>
+								<property name="Left" vt="Int8">28</property>
+								<property name="Top" vt="Int8">35</property>
+								<property name="Width" vt="Int8">50</property>
+								<property name="Height" vt="Int8">20</property>
+								<property name="AutoSize" vt="False">False</property>
+								<property name="Caption" vt="String">every</property>
+								<property name="Color" vt="Ident">clBtnHighlight</property>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">0</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308610</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="Checkbox1">
+							<properties>
+								<property name="Left" vt="Int8">12</property>
+								<property name="Top" vt="Int8">13</property>
+								<property name="Width" vt="Int16">361</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Check Maintenance Status</property>
+								<property name="Checked" vt="True">True</property>
+								<property name="State" vt="Ident">cbChecked</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACombo" name="Combo2">
+							<properties>
+								<property name="Left" vt="Int8">84</property>
+								<property name="Top" vt="Int8">33</property>
+								<property name="Width" vt="Int8">97</property>
+								<property name="Height" vt="Int8">25</property>
+								<property name="ItemHeight" vt="Int8">16</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="Text" vt="String">1m</property>
+								<property name="Items.Strings" vt="List">
+									<list>
+										<li vt="String">30s</li>
+										<li vt="String">1m</li>
+										<li vt="String">2m</li>
+										<li vt="String">3m</li>
+										<li vt="String">5m</li>
+										<li vt="String">10m</li>
+										<li vt="String">15m</li>
+										<li vt="String">30m</li>
+										<li vt="String">1h</li>
+									</list>
+								</property>
+								<property name="CtrlStyle" vt="Int32">1342374466</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="Checkbox2">
+							<properties>
+								<property name="Left" vt="Int8">12</property>
+								<property name="Top" vt="Int8">75</property>
+								<property name="Width" vt="Int16">361</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Check unacknowledged Triggers</property>
+								<property name="Checked" vt="True">True</property>
+								<property name="State" vt="Ident">cbChecked</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TALabel" name="Label10">
+							<properties>
+								<property name="Left" vt="Int8">28</property>
+								<property name="Top" vt="Int8">97</property>
+								<property name="Width" vt="Int8">50</property>
+								<property name="Height" vt="Int8">20</property>
+								<property name="AutoSize" vt="False">False</property>
+								<property name="Caption" vt="String">every</property>
+								<property name="Color" vt="Ident">clBtnHighlight</property>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">4</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308610</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACombo" name="Combo3">
+							<properties>
+								<property name="Left" vt="Int8">84</property>
+								<property name="Top" vt="Int8">95</property>
+								<property name="Width" vt="Int8">97</property>
+								<property name="Height" vt="Int8">25</property>
+								<property name="ItemHeight" vt="Int8">16</property>
+								<property name="TabOrder" vt="Int8">5</property>
+								<property name="Text" vt="String">1m</property>
+								<property name="Items.Strings" vt="List">
+									<list>
+										<li vt="String">30s</li>
+										<li vt="String">1m</li>
+										<li vt="String">2m</li>
+										<li vt="String">3m</li>
+										<li vt="String">5m</li>
+										<li vt="String">10m</li>
+										<li vt="String">15m</li>
+										<li vt="String">30m</li>
+										<li vt="String">1h</li>
+									</list>
+								</property>
+								<property name="CtrlStyle" vt="Int32">1342374466</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
 				</object>
-				<object type="TTabSheet" name="TabSheet1">
+				<object type="TTabSheet" name="Acknowledge">
 					<properties>
-						<property name="Caption" vt="String">TabSheet1</property>
+						<property name="Caption" vt="String">Acknowledge</property>
 						<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 						<property name="Font.Color" vt="Ident">clWindowText</property>
-						<property name="Font.Height" vt="Int8">-11</property>
-						<property name="Font.Name" vt="String">MS Sans Serif</property>
+						<property name="Font.Height" vt="Int8">-13</property>
+						<property name="Font.Name" vt="String">Arial</property>
 						<property name="Font.Style" vt="Set"/>
 						<property name="ImageIndex" vt="Int8">-1</property>
 						<property name="ParentFont" vt="False">False</property>
 					</properties>
-					<components/>
+					<components>
+						<object type="TALabel" name="Label4">
+							<properties>
+								<property name="Left" vt="Int8">4</property>
+								<property name="Top" vt="Int8">5</property>
+								<property name="Width" vt="Int16">130</property>
+								<property name="Height" vt="Int8">20</property>
+								<property name="Caption" vt="String">Default Message Text</property>
+								<property name="Color" vt="Ident">clBtnHighlight</property>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">0</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308608</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAEdit" name="Edit1">
+							<properties>
+								<property name="Left" vt="Int8">4</property>
+								<property name="Top" vt="Int8">29</property>
+								<property name="Width" vt="Int16">377</property>
+								<property name="Height" vt="Int16">137</property>
+								<property name="Lines.Strings" vt="List">
+									<list>
+										<li vt="String">This problem is ignored.</li>
+										<li vt="String">It is enough for the next occurrence of the problem to do something.</li>
+										<li vt="String"/>
+										<li vt="String">%USERDOMAIN%\%USERNAME%</li>
+										<li vt="String"/>
+									</list>
+								</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="CtrlStyle" vt="Int32">1345523908</property>
+								<property name="CtrlExStyle" vt="Int16">512</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="Checkbox3">
+							<properties>
+								<property name="Left" vt="Int8">4</property>
+								<property name="Top" vt="Int16">197</property>
+								<property name="Width" vt="Int16">201</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Try to close Problems</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="Checkbox4">
+							<properties>
+								<property name="Left" vt="Int8">4</property>
+								<property name="Top" vt="Int16">173</property>
+								<property name="Width" vt="Int16">289</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Never ask - always use default message</property>
+								<property name="Checked" vt="True">True</property>
+								<property name="State" vt="Ident">cbChecked</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
 				</object>
 			</components>
 		</object>
