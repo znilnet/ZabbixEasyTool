@@ -86,7 +86,6 @@ GUISetState(@SW_SHOW)
 
 
 
-Opt("GUIOnEventMode", 1)
 #Region ### START Koda GUI section ### Form=C:\_AutoIt\ZabbixEasyTool\FormSetup.kxf
 $FormSetup = GUICreate("Setup - ZabbixEasyTool", 414, 308, -1, -1)
 GUISetOnEvent($GUI_EVENT_CLOSE, "FormSetupClose")

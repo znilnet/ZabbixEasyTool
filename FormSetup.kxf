@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <object type="TAForm" name="FormSetup">
 	<properties>
-		<property name="Left" vt="Int16">715</property>
-		<property name="Top" vt="Int16">298</property>
+		<property name="Left" vt="Int16">713</property>
+		<property name="Top" vt="Int16">269</property>
 		<property name="Width" vt="Int16">473</property>
-		<property name="Height" vt="Int16">346</property>
+		<property name="Height" vt="Int16">347</property>
 		<property name="Caption" vt="String">Setup - ZabbixEasyTool</property>
 		<property name="Color" vt="Ident">clBtnFace</property>
 		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
@@ -41,7 +41,7 @@
 				<property name="Top" vt="Int8">8</property>
 				<property name="Width" vt="Int16">444</property>
 				<property name="Height" vt="Int16">256</property>
-				<property name="ActivePage" vt="Ident">Info</property>
+				<property name="ActivePage" vt="Ident">FormSetupTabSheetZabbixAPI</property>
 				<property name="Constraints.MaxWidth" vt="Int32">1409482752</property>
 				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -63,7 +63,7 @@
 						<object type="TAInput" name="Input1">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int8">36</property>
+								<property name="Top" vt="Int8">12</property>
 								<property name="Width" vt="Int16">289</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="TabOrder" vt="Int8">0</property>
@@ -77,7 +77,7 @@
 						<object type="TALabel" name="Label1">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">39</property>
+								<property name="Top" vt="Int8">15</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
@@ -95,7 +95,7 @@
 						<object type="TALabel" name="Label2">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">71</property>
+								<property name="Top" vt="Int8">111</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
@@ -113,7 +113,7 @@
 						<object type="TAInput" name="Input2">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int8">68</property>
+								<property name="Top" vt="Int8">108</property>
 								<property name="Width" vt="Int16">289</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="TabOrder" vt="Int8">3</property>
@@ -127,7 +127,7 @@
 						<object type="TALabel" name="Label3">
 							<properties>
 								<property name="Left" vt="Int8">4</property>
-								<property name="Top" vt="Int8">103</property>
+								<property name="Top" vt="Int16">143</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
@@ -145,7 +145,7 @@
 						<object type="TAInput" name="Input3">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int8">100</property>
+								<property name="Top" vt="Int16">140</property>
 								<property name="Width" vt="Int16">289</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="TabOrder" vt="Int8">5</property>
@@ -159,7 +159,7 @@
 						<object type="TAButton" name="Button1">
 							<properties>
 								<property name="Left" vt="Int8">92</property>
-								<property name="Top" vt="Int16">133</property>
+								<property name="Top" vt="Int16">173</property>
 								<property name="Width" vt="Int16">139</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="Caption" vt="String">Test Credentials</property>
@@ -174,7 +174,7 @@
 						<object type="TALabel" name="Label5">
 							<properties>
 								<property name="Left" vt="Int16">242</property>
-								<property name="Top" vt="Int16">134</property>
+								<property name="Top" vt="Int16">174</property>
 								<property name="Width" vt="Int16">139</property>
 								<property name="Height" vt="Int8">23</property>
 								<property name="AutoSize" vt="False">False</property>
@@ -186,6 +186,53 @@
 								<property name="CtrlStyle" vt="Int32">1350697729</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
 								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TALabel" name="Label23">
+							<properties>
+								<property name="Left" vt="Int8">4</property>
+								<property name="Top" vt="Int8">47</property>
+								<property name="Width" vt="Int8">82</property>
+								<property name="Height" vt="Int8">20</property>
+								<property name="AutoSize" vt="False">False</property>
+								<property name="Caption" vt="String">Host</property>
+								<property name="Color" vt="Ident">clBtnHighlight</property>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">8</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308610</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAInput" name="Input7">
+							<properties>
+								<property name="Left" vt="Int8">92</property>
+								<property name="Top" vt="Int8">44</property>
+								<property name="Width" vt="Int16">289</property>
+								<property name="Height" vt="Int8">24</property>
+								<property name="TabOrder" vt="Int8">9</property>
+								<property name="Text" vt="String">DC01</property>
+								<property name="CtrlStyle" vt="Int32">1342374016</property>
+								<property name="CtrlExStyle" vt="Int16">512</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAButton" name="Button4">
+							<properties>
+								<property name="Left" vt="Int8">92</property>
+								<property name="Top" vt="Int8">75</property>
+								<property name="Width" vt="Int16">289</property>
+								<property name="Height" vt="Int8">25</property>
+								<property name="Caption" vt="String">Read data from zabbix_agent configuration</property>
+								<property name="TabOrder" vt="Int8">10</property>
+								<property name="Color" vt="Ident">clBtnFace</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
 							</properties>
 							<components/>
 						</object>
@@ -218,7 +265,7 @@
 							<properties>
 								<property name="Left" vt="Int8">92</property>
 								<property name="Top" vt="Int8">11</property>
-								<property name="Width" vt="Int16">289</property>
+								<property name="Width" vt="Int16">321</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="TabOrder" vt="Int8">1</property>
 								<property name="Text" vt="String">ZabbixEasyTool</property>
@@ -250,7 +297,7 @@
 							<properties>
 								<property name="Left" vt="Int8">92</property>
 								<property name="Top" vt="Int8">43</property>
-								<property name="Width" vt="Int16">289</property>
+								<property name="Width" vt="Int16">321</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="TabOrder" vt="Int8">3</property>
 								<property name="Text" vt="String">%USERDOMAIN%\%USERNAME%</property>
@@ -265,7 +312,7 @@
 								<property name="Left" vt="Int8">12</property>
 								<property name="Top" vt="Int8">99</property>
 								<property name="Width" vt="Int8">73</property>
-								<property name="Height" vt="Int8">84</property>
+								<property name="Height" vt="Int8">100</property>
 								<property name="ItemHeight" vt="Int8">16</property>
 								<property name="Items.Strings" vt="List">
 									<list>
@@ -310,8 +357,8 @@
 								<property name="Width" vt="Int8">35</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="TabOrder" vt="Int8">6</property>
-								<property name="Text" vt="String">3600</property>
-								<property name="CtrlStyle" vt="Int32">1342382208</property>
+								<property name="Text" vt="String">75</property>
+								<property name="CtrlStyle" vt="Int32">1342382210</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
 							</properties>
@@ -394,7 +441,7 @@
 					<components>
 						<object type="TALabel" name="FormSetupTriggerLabelNotclassified">
 							<properties>
-								<property name="Left" vt="Int8">4</property>
+								<property name="Left" vt="Int8">28</property>
 								<property name="Top" vt="Int8">23</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
@@ -413,7 +460,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputNotclassified">
 							<properties>
-								<property name="Left" vt="Int8">92</property>
+								<property name="Left" vt="Int8">116</property>
 								<property name="Top" vt="Int8">20</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
@@ -427,7 +474,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelColorNotclassified">
 							<properties>
-								<property name="Left" vt="Int16">284</property>
+								<property name="Left" vt="Int16">308</property>
 								<property name="Top" vt="Int8">20</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
@@ -444,7 +491,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputColorNotclassified">
 							<properties>
-								<property name="Left" vt="Int16">316</property>
+								<property name="Left" vt="Int16">340</property>
 								<property name="Top" vt="Int8">20</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
@@ -464,7 +511,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelInformation">
 							<properties>
-								<property name="Left" vt="Int8">4</property>
+								<property name="Left" vt="Int8">28</property>
 								<property name="Top" vt="Int8">55</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
@@ -482,7 +529,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputInformation">
 							<properties>
-								<property name="Left" vt="Int8">92</property>
+								<property name="Left" vt="Int8">116</property>
 								<property name="Top" vt="Int8">52</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
@@ -496,7 +543,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelColorInformation">
 							<properties>
-								<property name="Left" vt="Int16">284</property>
+								<property name="Left" vt="Int16">308</property>
 								<property name="Top" vt="Int8">52</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
@@ -513,7 +560,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputColorInformation">
 							<properties>
-								<property name="Left" vt="Int16">316</property>
+								<property name="Left" vt="Int16">340</property>
 								<property name="Top" vt="Int8">52</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
@@ -533,7 +580,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelWarning">
 							<properties>
-								<property name="Left" vt="Int8">4</property>
+								<property name="Left" vt="Int8">28</property>
 								<property name="Top" vt="Int8">87</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
@@ -551,7 +598,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputWarning">
 							<properties>
-								<property name="Left" vt="Int8">92</property>
+								<property name="Left" vt="Int8">116</property>
 								<property name="Top" vt="Int8">84</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
@@ -565,7 +612,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelColorWarning">
 							<properties>
-								<property name="Left" vt="Int16">284</property>
+								<property name="Left" vt="Int16">308</property>
 								<property name="Top" vt="Int8">84</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
@@ -582,7 +629,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputColorWarning">
 							<properties>
-								<property name="Left" vt="Int16">316</property>
+								<property name="Left" vt="Int16">340</property>
 								<property name="Top" vt="Int8">84</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
@@ -602,7 +649,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelAverage">
 							<properties>
-								<property name="Left" vt="Int8">4</property>
+								<property name="Left" vt="Int8">28</property>
 								<property name="Top" vt="Int8">119</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
@@ -620,7 +667,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputAverage">
 							<properties>
-								<property name="Left" vt="Int8">92</property>
+								<property name="Left" vt="Int8">116</property>
 								<property name="Top" vt="Int8">116</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
@@ -634,7 +681,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelColorAverage">
 							<properties>
-								<property name="Left" vt="Int16">284</property>
+								<property name="Left" vt="Int16">308</property>
 								<property name="Top" vt="Int8">116</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
@@ -651,7 +698,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputColorAverage">
 							<properties>
-								<property name="Left" vt="Int16">316</property>
+								<property name="Left" vt="Int16">340</property>
 								<property name="Top" vt="Int8">116</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
@@ -671,7 +718,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelHigh">
 							<properties>
-								<property name="Left" vt="Int8">4</property>
+								<property name="Left" vt="Int8">28</property>
 								<property name="Top" vt="Int16">151</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
@@ -689,7 +736,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputHigh">
 							<properties>
-								<property name="Left" vt="Int8">92</property>
+								<property name="Left" vt="Int8">116</property>
 								<property name="Top" vt="Int16">148</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
@@ -703,7 +750,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelColorHigh">
 							<properties>
-								<property name="Left" vt="Int16">284</property>
+								<property name="Left" vt="Int16">308</property>
 								<property name="Top" vt="Int16">148</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
@@ -720,7 +767,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputColorHigh">
 							<properties>
-								<property name="Left" vt="Int16">316</property>
+								<property name="Left" vt="Int16">340</property>
 								<property name="Top" vt="Int16">148</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
@@ -740,7 +787,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelDisaster">
 							<properties>
-								<property name="Left" vt="Int8">4</property>
+								<property name="Left" vt="Int8">28</property>
 								<property name="Top" vt="Int16">183</property>
 								<property name="Width" vt="Int8">82</property>
 								<property name="Height" vt="Int8">20</property>
@@ -758,7 +805,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputDisaster">
 							<properties>
-								<property name="Left" vt="Int8">92</property>
+								<property name="Left" vt="Int8">116</property>
 								<property name="Top" vt="Int16">180</property>
 								<property name="Width" vt="Int16">185</property>
 								<property name="Height" vt="Int8">24</property>
@@ -772,7 +819,7 @@
 						</object>
 						<object type="TALabel" name="FormSetupTriggerLabelColorDisaster">
 							<properties>
-								<property name="Left" vt="Int16">284</property>
+								<property name="Left" vt="Int16">308</property>
 								<property name="Top" vt="Int16">180</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
@@ -789,7 +836,7 @@
 						</object>
 						<object type="TAInput" name="FormSetupTriggerInputColorDisaster">
 							<properties>
-								<property name="Left" vt="Int16">316</property>
+								<property name="Left" vt="Int16">340</property>
 								<property name="Top" vt="Int16">180</property>
 								<property name="Width" vt="Int8">65</property>
 								<property name="Height" vt="Int8">25</property>
@@ -822,8 +869,8 @@
 					<components>
 						<object type="TALabel" name="Label9">
 							<properties>
-								<property name="Left" vt="Int8">28</property>
-								<property name="Top" vt="Int8">35</property>
+								<property name="Left" vt="Int8">68</property>
+								<property name="Top" vt="Int8">67</property>
 								<property name="Width" vt="Int8">50</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
@@ -840,8 +887,8 @@
 						</object>
 						<object type="TACheckbox" name="Checkbox1">
 							<properties>
-								<property name="Left" vt="Int8">12</property>
-								<property name="Top" vt="Int8">13</property>
+								<property name="Left" vt="Int8">52</property>
+								<property name="Top" vt="Int8">45</property>
 								<property name="Width" vt="Int16">361</property>
 								<property name="Height" vt="Int8">17</property>
 								<property name="Caption" vt="String">Check Maintenance Status</property>
@@ -856,8 +903,8 @@
 						</object>
 						<object type="TACombo" name="Combo2">
 							<properties>
-								<property name="Left" vt="Int8">84</property>
-								<property name="Top" vt="Int8">33</property>
+								<property name="Left" vt="Int8">124</property>
+								<property name="Top" vt="Int8">65</property>
 								<property name="Width" vt="Int8">97</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="ItemHeight" vt="Int8">16</property>
@@ -884,8 +931,8 @@
 						</object>
 						<object type="TACheckbox" name="Checkbox2">
 							<properties>
-								<property name="Left" vt="Int8">12</property>
-								<property name="Top" vt="Int8">75</property>
+								<property name="Left" vt="Int8">52</property>
+								<property name="Top" vt="Int8">123</property>
 								<property name="Width" vt="Int16">361</property>
 								<property name="Height" vt="Int8">17</property>
 								<property name="Caption" vt="String">Check unacknowledged Triggers</property>
@@ -900,8 +947,8 @@
 						</object>
 						<object type="TALabel" name="Label10">
 							<properties>
-								<property name="Left" vt="Int8">28</property>
-								<property name="Top" vt="Int8">97</property>
+								<property name="Left" vt="Int8">68</property>
+								<property name="Top" vt="Int16">145</property>
 								<property name="Width" vt="Int8">50</property>
 								<property name="Height" vt="Int8">20</property>
 								<property name="AutoSize" vt="False">False</property>
@@ -918,8 +965,8 @@
 						</object>
 						<object type="TACombo" name="Combo3">
 							<properties>
-								<property name="Left" vt="Int8">84</property>
-								<property name="Top" vt="Int8">95</property>
+								<property name="Left" vt="Int8">124</property>
+								<property name="Top" vt="Int16">143</property>
 								<property name="Width" vt="Int8">97</property>
 								<property name="Height" vt="Int8">25</property>
 								<property name="ItemHeight" vt="Int8">16</property>
@@ -979,7 +1026,7 @@
 							<properties>
 								<property name="Left" vt="Int8">4</property>
 								<property name="Top" vt="Int8">29</property>
-								<property name="Width" vt="Int16">377</property>
+								<property name="Width" vt="Int16">425</property>
 								<property name="Height" vt="Int16">137</property>
 								<property name="Lines.Strings" vt="List">
 									<list>
@@ -1245,6 +1292,54 @@
 							</properties>
 							<components/>
 						</object>
+						<object type="TALabel" name="Label21">
+							<properties>
+								<property name="Left" vt="Int8">89</property>
+								<property name="Top" vt="Int8">13</property>
+								<property name="Width" vt="Int16">308</property>
+								<property name="Height" vt="Int8">20</property>
+								<property name="AutoSize" vt="False">False</property>
+								<property name="Caption" vt="String">0.0.0.1</property>
+								<property name="Color" vt="Ident">clBtnHighlight</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clBlack</property>
+								<property name="Font.Height" vt="Int8">-13</property>
+								<property name="Font.Name" vt="String">Arial</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">10</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308608</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
+						<object type="TALabel" name="Label22">
+							<properties>
+								<property name="Left" vt="Int8">89</property>
+								<property name="Top" vt="Int8">37</property>
+								<property name="Width" vt="Int16">308</property>
+								<property name="Height" vt="Int8">20</property>
+								<property name="AutoSize" vt="False">False</property>
+								<property name="Caption" vt="String">2017-09-16 08:59:00</property>
+								<property name="Color" vt="Ident">clBtnHighlight</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clBlack</property>
+								<property name="Font.Height" vt="Int8">-13</property>
+								<property name="Font.Name" vt="String">Arial</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">11</property>
+								<property name="HaveVariable" vt="False">False</property>
+								<property name="CtrlStyle" vt="Int32">1342308608</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set"/>
+							</properties>
+							<components/>
+						</object>
 					</components>
 				</object>
 			</components>
@@ -1297,6 +1392,32 @@
 				<property name="CtrlStyle" vt="Int32">1342373888</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
 				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAEdit" name="Edit2">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">264</property>
+				<property name="Width" vt="Int16">201</property>
+				<property name="Height" vt="Int8">41</property>
+				<property name="Color" vt="Ident">clRed</property>
+				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clYellow</property>
+				<property name="Font.Height" vt="Int8">-13</property>
+				<property name="Font.Name" vt="String">Arial</property>
+				<property name="Font.Style" vt="Set">fsBold</property>
+				<property name="Lines.Strings" vt="List">
+					<list>
+						<li vt="String">Some Value are set by Group </li>
+						<li vt="String">Policy and are blocked</li>
+					</list>
+				</property>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">4</property>
+				<property name="CtrlStyle" vt="Int32">1342314501</property>
+				<property name="CtrlExStyle" vt="Int16">512</property>
+				<property name="Resizing" vt="Set"/>
 			</properties>
 			<components/>
 		</object>
