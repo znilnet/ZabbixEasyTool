@@ -41,7 +41,7 @@
 				<property name="Top" vt="Int8">8</property>
 				<property name="Width" vt="Int16">444</property>
 				<property name="Height" vt="Int16">256</property>
-				<property name="ActivePage" vt="Ident">FormSetupTabSheetInfo</property>
+				<property name="ActivePage" vt="Ident">FormSetupTabSheetZabbixAPI</property>
 				<property name="Constraints.MaxWidth" vt="Int32">1409482752</property>
 				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -302,7 +302,7 @@
 								<property name="Width" vt="Int16">321</property>
 								<property name="Height" vt="Int8">24</property>
 								<property name="TabOrder" vt="Int8">3</property>
-								<property name="Text" vt="String">%USERDOMAIN%\%USERNAME%</property>
+								<property name="Text" vt="String">USERDOMAIN\USERNAME</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -314,7 +314,7 @@
 								<property name="Left" vt="Int8">12</property>
 								<property name="Top" vt="Int8">99</property>
 								<property name="Width" vt="Int8">73</property>
-								<property name="Height" vt="Int8">68</property>
+								<property name="Height" vt="Int8">4</property>
 								<property name="ItemHeight" vt="Int8">16</property>
 								<property name="Items.Strings" vt="List">
 									<list>
@@ -1061,7 +1061,7 @@
 										<li vt="String">This problem is ignored.</li>
 										<li vt="String">It is enough for the next occurrence of the problem to do something.</li>
 										<li vt="String"/>
-										<li vt="String">%USERDOMAIN%\%USERNAME%</li>
+										<li vt="String">USERDOMAIN\USERNAME</li>
 										<li vt="String"/>
 									</list>
 								</property>
