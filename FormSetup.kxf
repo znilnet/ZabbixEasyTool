@@ -164,6 +164,7 @@
 								<property name="Height" vt="Int8">25</property>
 								<property name="Caption" vt="String">Test Credentials</property>
 								<property name="TabOrder" vt="Int8">6</property>
+								<property name="OnClick" vt="String">FormSetupAPIButtonTestCredentialsClick</property>
 								<property name="Color" vt="Ident">clBtnFace</property>
 								<property name="CtrlStyle" vt="Int32">1342373888</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -229,6 +230,7 @@
 								<property name="Height" vt="Int8">25</property>
 								<property name="Caption" vt="String">Read data from zabbix_agent configuration</property>
 								<property name="TabOrder" vt="Int8">10</property>
+								<property name="OnClick" vt="String">FormSetupAPIButtonReadDataZabbixAgentClick</property>
 								<property name="Color" vt="Ident">clBtnFace</property>
 								<property name="CtrlStyle" vt="Int32">1342373888</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -329,6 +331,7 @@
 									</list>
 								</property>
 								<property name="TabOrder" vt="Int8">4</property>
+								<property name="OnClick" vt="String">FormSetupMaintenanceListTimesClick</property>
 								<property name="CtrlStyle" vt="Int32">1344471041</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set"/>
@@ -343,6 +346,7 @@
 								<property name="Height" vt="Int8">24</property>
 								<property name="Caption" vt="String">Add</property>
 								<property name="TabOrder" vt="Int8">5</property>
+								<property name="OnClick" vt="String">FormSetupMaintenanceButtonAddClick</property>
 								<property name="Color" vt="Ident">clBtnFace</property>
 								<property name="CtrlStyle" vt="Int32">1342373888</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -372,6 +376,7 @@
 								<property name="Height" vt="Int8">24</property>
 								<property name="Caption" vt="String">Delete</property>
 								<property name="TabOrder" vt="Int8">7</property>
+								<property name="OnClick" vt="String">FormSetupMaintenanceButtonDeleteClick</property>
 								<property name="Color" vt="Ident">clBtnFace</property>
 								<property name="CtrlStyle" vt="Int32">1342373888</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -412,6 +417,7 @@
 								<property name="ItemHeight" vt="Int8">16</property>
 								<property name="TabOrder" vt="Int8">9</property>
 								<property name="Text" vt="String">m</property>
+								<property name="OnChange" vt="String">FormSetupMaintenanceComboUnitChange</property>
 								<property name="Items.Strings" vt="List">
 									<list>
 										<li vt="String">s</li>
@@ -478,10 +484,12 @@
 								<property name="Top" vt="Int8">20</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clDefault</property>
 								<property name="ParentColor" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">2</property>
+								<property name="OnClick" vt="String">FormSetupTriggerLabelColorNotclassifiedClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -503,6 +511,7 @@
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">3</property>
 								<property name="Text" vt="String">97AAB3</property>
+								<property name="OnChange" vt="String">FormSetupTriggerInputColorNotclassifiedChange</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -547,10 +556,12 @@
 								<property name="Top" vt="Int8">52</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clGradientActiveCaption</property>
 								<property name="ParentColor" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">6</property>
+								<property name="OnClick" vt="String">FormSetupTriggerLabelColorInformationClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -572,6 +583,7 @@
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">7</property>
 								<property name="Text" vt="String">7499FF</property>
+								<property name="OnChange" vt="String">FormSetupTriggerInputColorInformationChange</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -616,10 +628,12 @@
 								<property name="Top" vt="Int8">84</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clFuchsia</property>
 								<property name="ParentColor" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">10</property>
+								<property name="OnClick" vt="String">FormSetupTriggerLabelColorWarningClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -641,6 +655,7 @@
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">11</property>
 								<property name="Text" vt="String">FFC859</property>
+								<property name="OnChange" vt="String">FormSetupTriggerInputColorWarningChange</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -685,10 +700,12 @@
 								<property name="Top" vt="Int8">116</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clYellow</property>
 								<property name="ParentColor" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">14</property>
+								<property name="OnClick" vt="String">FormSetupTriggerLabelColorAverageClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -710,6 +727,7 @@
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">15</property>
 								<property name="Text" vt="String">FFA059</property>
+								<property name="OnChange" vt="String">FormSetupTriggerInputColorAverageChange</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -754,10 +772,12 @@
 								<property name="Top" vt="Int16">148</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clMaroon</property>
 								<property name="ParentColor" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">18</property>
+								<property name="OnClick" vt="String">FormSetupTriggerLabelColorHighClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -779,6 +799,7 @@
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">19</property>
 								<property name="Text" vt="String">E97659</property>
+								<property name="OnChange" vt="String">FormSetupTriggerInputColorHighChange</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -823,10 +844,12 @@
 								<property name="Top" vt="Int16">180</property>
 								<property name="Width" vt="Int8">24</property>
 								<property name="Height" vt="Int8">24</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Color" vt="Ident">clRed</property>
 								<property name="ParentColor" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">22</property>
+								<property name="OnClick" vt="String">FormSetupTriggerLabelColorDisasterClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -848,6 +871,7 @@
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">23</property>
 								<property name="Text" vt="String">E45959</property>
+								<property name="OnChange" vt="String">FormSetupTriggerInputColorDisasterChange</property>
 								<property name="CtrlStyle" vt="Int32">1342374016</property>
 								<property name="CtrlExStyle" vt="Int16">512</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -895,6 +919,7 @@
 								<property name="Checked" vt="True">True</property>
 								<property name="State" vt="Ident">cbChecked</property>
 								<property name="TabOrder" vt="Int8">1</property>
+								<property name="OnClick" vt="String">FormSetupCheckCheckboxMaintenanceStatusClick</property>
 								<property name="CtrlStyle" vt="Int32">1342242819</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -910,6 +935,7 @@
 								<property name="ItemHeight" vt="Int8">16</property>
 								<property name="TabOrder" vt="Int8">2</property>
 								<property name="Text" vt="String">1m</property>
+								<property name="OnChange" vt="String">FormSetupCheckComboTimesMaintenanceChange</property>
 								<property name="Items.Strings" vt="List">
 									<list>
 										<li vt="String">30s</li>
@@ -939,6 +965,7 @@
 								<property name="Checked" vt="True">True</property>
 								<property name="State" vt="Ident">cbChecked</property>
 								<property name="TabOrder" vt="Int8">3</property>
+								<property name="OnClick" vt="String">FormSetupCheckCheckboxTriggerClick</property>
 								<property name="CtrlStyle" vt="Int32">1342242819</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
 								<property name="Resizing" vt="Set">DockHeight</property>
@@ -972,6 +999,7 @@
 								<property name="ItemHeight" vt="Int8">16</property>
 								<property name="TabOrder" vt="Int8">5</property>
 								<property name="Text" vt="String">1m</property>
+								<property name="OnChange" vt="String">FormSetupCheckComboTimesTriggerChange</property>
 								<property name="Items.Strings" vt="List">
 									<list>
 										<li vt="String">30s</li>
@@ -1184,6 +1212,7 @@
 								<property name="Top" vt="Int8">109</property>
 								<property name="Width" vt="Int16">308</property>
 								<property name="Height" vt="Int8">20</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">https://znil.net</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
@@ -1195,6 +1224,7 @@
 								<property name="ParentColor" vt="False">False</property>
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">5</property>
+								<property name="OnClick" vt="String">FormSetupInfoLabelHomepageRightClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -1208,6 +1238,7 @@
 								<property name="Top" vt="Int16">133</property>
 								<property name="Width" vt="Int16">308</property>
 								<property name="Height" vt="Int8">20</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">https://github.com/znilnet/ZabbixEasyTool</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
@@ -1219,6 +1250,7 @@
 								<property name="ParentColor" vt="False">False</property>
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">6</property>
+								<property name="OnClick" vt="String">FormSetupInfoLabelRepositoryRightClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -1274,6 +1306,7 @@
 								<property name="Top" vt="Int16">181</property>
 								<property name="Width" vt="Int16">340</property>
 								<property name="Height" vt="Int8">20</property>
+								<property name="Cursor" vt="Ident">crHandPoint</property>
 								<property name="AutoSize" vt="False">False</property>
 								<property name="Caption" vt="String">https://github.com/znilnet/ZabbixEasyTool/./LICENSE.txt</property>
 								<property name="Color" vt="Ident">clBtnHighlight</property>
@@ -1285,6 +1318,7 @@
 								<property name="ParentColor" vt="False">False</property>
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">9</property>
+								<property name="OnClick" vt="String">FormSetupInfoLabelLicenseRightClick</property>
 								<property name="HaveVariable" vt="False">False</property>
 								<property name="CtrlStyle" vt="Int32">1342308608</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
