@@ -303,14 +303,16 @@ _ArrayDisplay($g_a_Triggers, "Trigger im Status PROBLEM")
 Local $g_a_Events = _zbxTriggerEventGet($g_ZabbixAPI_URL, $g_ZabbixSessionId, $g_a_Triggers[1][1])
 _ArrayDisplay($g_a_Events, "Events für Trigger " & $g_a_Triggers[1][1])
 
-For $i = 1 To $g_a_Events[0] Step 1
-	Local $g_result = _zbxEventAcknowledge($g_ZabbixAPI_URL, $g_ZabbixSessionId, $g_a_Events[$i])
-	MsgBox(262144, 'Debug line ~' & @ScriptLineNumber, 'Selection:' & @CRLF & '$g_result' & @CRLF & @CRLF & 'Return:' & @CRLF & $g_result) ;### Debug MSGBOX
-Next
-Exit
+;~ For $i = 1 To $g_a_Events[0] Step 1
+;~ 	Local $g_result = _zbxEventAcknowledge($g_ZabbixAPI_URL, $g_ZabbixSessionId, $g_a_Events[$i])
+;~ 	MsgBox(262144, 'Debug line ~' & @ScriptLineNumber, 'Selection:' & @CRLF & '$g_result' & @CRLF & @CRLF & 'Return:' & @CRLF & $g_result) ;### Debug MSGBOX
+;~ Next
+;~ Exit
 
-Local $test = _zbx_HostAddMaintenance($g_ZabbixAPI_URL, $g_ZabbixSessionId, $g_ZabbixHostId, 60000)
+Local $test = _zbx_HostAddMaintenance($g_ZabbixAPI_URL, $g_ZabbixSessionId, $g_ZabbixHostId, 1800)
 ;~ MsgBox(262144, 'Debug line ~' & @ScriptLineNumber, 'Selection:' & @CRLF & '$test' & @CRLF & @CRLF & 'Return:' & @CRLF & $test) ;### Debug MSGBOX
+
+exit
 
 $g_a_ZabbixMaintainanceId = _zbx_HostGetMaintenanceIDs($g_ZabbixAPI_URL, $g_ZabbixSessionId, $g_ZabbixHostId, "ZabbixEasy")
 _ArrayDisplay($g_a_ZabbixMaintainanceId, "Nur Maintenance Modes mit ZabbixEasy im Namen")

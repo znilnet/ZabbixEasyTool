@@ -9,6 +9,9 @@
 #include <ListBoxConstants.au3>
 #include <StaticConstants.au3>
 #include <GuiTab.au3>
+;~ #include <GuiListBox.au3>
+#include <Misc.au3>
+
 AutoItSetOption("MustDeclareVars", 1)
 Opt("GUIOnEventMode", 1)
 
@@ -25,7 +28,7 @@ Opt("GUIOnEventMode", 1)
 
 
 
-
+; Für die FormSetup
 Global $FormSetup
 Global $FormSetupPageControl
 Global $FormSetupTabSheetZabbixAPI, $FormSetupAPIInputURL, $FormSetupAPILabelURL, $FormSetupAPILabelUsername, $FormSetupAPIInputUsername, $FormSetupAPILabelPassword, $FormSetupAPIInputPassword, $FormSetupAPIButtonTestCredentials
@@ -45,6 +48,12 @@ Global $FormSetupTabSheetInfo, $FormSetupInfoLabelVersionLeft, $FormSetupInfoLab
 Global $FormSetupInfoLabelHomepageRight, $FormSetupInfoLabelRepositoryRight, $FormSetupInfoLabelAutorRight, $FormSetupInfoLabelLicenseLeft, $FormSetupInfoLabelLicenseRight
 Global $FormSetupInfoLabelVersionRight, $FormSetupInfoLabelDateTimeRight
 Global $FormSetupButtonOK, $FormSetupButtonCancel, $FormSetupButtonHelp, $FormSetupInfoEditGPOisActive
+
+; Die Auswahl an Zeiten für die Maintenance
+;                                       30m   1h     2h    4h     8h    24h     48h     72h
+Global $g_a_MaintenanceTimes[9] = [ 8, 1800, 3600, 7200, 14400, 28800, 86400, 172800, 259200 ]
+Local $s_temp = ""
+
 #EndRegion Variablen
 
 #Region Funktionen
@@ -90,14 +99,29 @@ EndFunc
 ; Alle Einstellungen in der Registry speichern
 Func FormSetupButtonOKClick()
 	_SettingsWrite()
+	Exit
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupCheckCheckboxMaintenanceStatusClick()
+	If GUICtrlRead($FormSetupCheckCheckboxMaintenanceStatus) = $GUI_CHECKED Then
+		GUICtrlSetState($FormSetupCheckLabelEvery1, $GUI_ENABLE)
+		GUICtrlSetState($FormSetupCheckComboTimesMaintenance, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($FormSetupCheckLabelEvery1, $GUI_DISABLE)
+		GUICtrlSetState($FormSetupCheckComboTimesMaintenance, $GUI_DISABLE)
+	EndIf
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupCheckCheckboxTriggerClick()
+	If GUICtrlRead($FormSetupCheckCheckboxTrigger) = $GUI_CHECKED Then
+		GUICtrlSetState($FormSetupCheckLabelEvery2, $GUI_ENABLE)
+		GUICtrlSetState($FormSetupCheckComboTimesTrigger, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($FormSetupCheckLabelEvery2, $GUI_DISABLE)
+		GUICtrlSetState($FormSetupCheckComboTimesTrigger, $GUI_DISABLE)
+	EndIf
 EndFunc
 
 ; #############################################################################################################################################################
@@ -151,63 +175,177 @@ EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerInputColorAverageChange()
+	_TriggerInputColor()
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorAverage, "0x" & GUICtrlRead($FormSetupTriggerInputColorAverage))
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerInputColorDisasterChange()
+	_TriggerInputColor()
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, "0x" & GUICtrlRead($FormSetupTriggerInputColorDisaster))
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerInputColorHighChange()
+	_TriggerInputColor()
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorHigh, "0x" & GUICtrlRead($FormSetupTriggerInputColorHigh))
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerInputColorInformationChange()
+	_TriggerInputColor()
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorInformation, "0x" & GUICtrlRead($FormSetupTriggerInputColorInformation))
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerInputColorNotclassifiedChange()
+	_TriggerInputColor()
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorNotclassified, "0x" & GUICtrlRead($FormSetupTriggerInputColorNotclassified))
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerInputColorWarningChange()
+	_TriggerInputColor()
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorWarning, "0x" & GUICtrlRead($FormSetupTriggerInputColorWarning))
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerLabelColorAverageClick()
+	_TriggerChooseColor()
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerLabelColorDisasterClick()
+	_TriggerChooseColor()
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerLabelColorHighClick()
+	_TriggerChooseColor()
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerLabelColorInformationClick()
+	_TriggerChooseColor()
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerLabelColorNotclassifiedClick()
+	_TriggerChooseColor()
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupTriggerLabelColorWarningClick()
+	_TriggerChooseColor()
 EndFunc
 
 ; #############################################################################################################################################################
 ; #############################################################################################################################################################
 ; #############################################################################################################################################################
 ; #############################################################################################################################################################
+Func _TriggerInputColor()
+	GUICtrlSetData(@GUI_CtrlId,StringLeft(StringRegExpReplace(StringUpper(GUICtrlRead(@GUI_CtrlId)),"[^[01723456789ABCDEF]*", ""),6))
+EndFunc
+; #############################################################################################################################################################
+Func _TriggerChooseColor()
+	Local $__hex_NewColor = _ChooseColor(2, "0x" & GUICtrlRead($FormSetupTriggerInputColorDisaster), 2, $FormSetup)
+	Local $__cInput
+	If $__hex_NewColor <> -1 Then
+		Switch @GUI_CtrlId
+			Case $FormSetupTriggerLabelColorNotclassified
+				$__cInput = $FormSetupTriggerInputColorNotclassified
+			Case $FormSetupTriggerLabelColorInformation
+				$__cInput = $FormSetupTriggerInputColorInformation
+			Case $FormSetupTriggerLabelColorWarning
+				$__cInput = $FormSetupTriggerInputColorWarning
+			Case $FormSetupTriggerLabelColorAverage
+				$__cInput = $FormSetupTriggerInputColorAverage
+			Case $FormSetupTriggerLabelColorHigh
+				$__cInput = $FormSetupTriggerInputColorHigh
+			Case $FormSetupTriggerLabelColorDisaster
+				$__cInput = $FormSetupTriggerInputColorDisaster
+		EndSwitch
+		GUICtrlSetData($__cInput, StringTrimLeft($__hex_NewColor, 2))
+		GUICtrlSetBkColor(@GUI_CtrlId, $__hex_NewColor)
+	EndIf
+EndFunc
+; #############################################################################################################################################################
+Func _SecondsToTime($__iSec)
+	Local $__iRetH = 0, $__iRetM = 0, $__iRetS = 0, $__sReturn = ""
+	If $__iSec / 3600 >= 1 Then
+		$__iRetH = Floor($__iSec / 3600)
+		$__iSec = Mod($__iSec, 3600)
+	EndIf
+	If $__iSec / 60 >= 1 Then
+		$__iRetM = Floor($__iSec / 60)
+		$__iSec = Mod($__iSec, 60)
+	EndIf
+	$__iRetS = $__iSec
+	;Return StringFormat("%.2d:%.2d:%.2d",$__iRetH,$__iRetM,$__iRetS)
+	$__sReturn = StringFormat("%.2dh%.2dm%.2ds", $__iRetH, $__iRetM, $__iRetS)
+	$__sReturn = StringReplace($__sReturn, "00h", "")
+	$__sReturn = StringReplace($__sReturn, "00m", "")
+	$__sReturn = StringReplace($__sReturn, "00s", "")
+;~ 	MsgBox(0,"",StringLeft($__sReturn, 1))
+	If StringLeft($__sReturn, 1) = "0" Then
+		$__sReturn = StringTrimLeft($__sReturn, 1)
+	EndIf
+	Return $__sReturn
+EndFunc   ;==>_SecondsToTime
+
+; #############################################################################################################################################################
+
 Func _SettingsWrite()
 	; Tab "Zabbix API"
-	RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local","$FormSetupAPIInputURL",		"REG_SZ", GUICtrlRead($FormSetupAPIInputURL))
-	RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local","$FormSetupAPIInputHost",		"REG_SZ", GUICtrlRead($FormSetupAPIInputHost))
-	RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local","$FormSetupAPIInputUsername",	"REG_SZ", GUICtrlRead($FormSetupAPIInputUsername))
-	RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local","$FormSetupAPIInputPassword",	"REG_SZ", GUICtrlRead($FormSetupAPIInputPassword))
+	_zetRegWrite("$FormSetupAPIInputURL", 						$FormSetupAPIInputURL)
+	_zetRegWrite("$FormSetupAPIInputHost", 						$FormSetupAPIInputHost)
+	_zetRegWrite("$FormSetupAPIInputUsername", 					$FormSetupAPIInputUsername)
+	_zetRegWrite("$FormSetupAPIInputPassword", 					$FormSetupAPIInputPassword)
+
+	; Tab "Maintenance"
+	_zetRegWrite("$FormSetupMaintenanceInputPrefix", 			$FormSetupMaintenanceInputPrefix)
+	_zetRegWrite("$FormSetupMaintenanceInputDescription", 		$FormSetupMaintenanceInputDescription)
+	_zetRegWrite("MaintenanceTimes", 							_ArrayToString($g_a_MaintenanceTimes,"|",1), True)
+
+	; Tab "Trigger"
+	_zetRegWrite("$FormSetupTriggerInputNotclassified", 		$FormSetupTriggerInputNotclassified)
+	_zetRegWrite("$FormSetupTriggerInputInformation", 			$FormSetupTriggerInputInformation)
+	_zetRegWrite("$FormSetupTriggerInputWarning", 				$FormSetupTriggerInputWarning)
+	_zetRegWrite("$FormSetupTriggerInputAverage", 				$FormSetupTriggerInputAverage)
+	_zetRegWrite("$FormSetupTriggerInputHigh", 					$FormSetupTriggerInputHigh)
+	_zetRegWrite("$FormSetupTriggerInputDisaster", 				$FormSetupTriggerInputDisaster)
+	_zetRegWrite("$FormSetupTriggerInputColorNotclassified", 	$FormSetupTriggerInputColorNotclassified)
+	_zetRegWrite("$FormSetupTriggerInputColorInformation", 		$FormSetupTriggerInputColorInformation)
+	_zetRegWrite("$FormSetupTriggerInputColorWarning", 			$FormSetupTriggerInputColorWarning)
+	_zetRegWrite("$FormSetupTriggerInputColorAverage", 			$FormSetupTriggerInputColorAverage)
+	_zetRegWrite("$FormSetupTriggerInputColorHigh", 			$FormSetupTriggerInputColorHigh)
+	_zetRegWrite("$FormSetupTriggerInputColorDisaster", 		$FormSetupTriggerInputColorDisaster)
+
+	; Tab "Check"
+	_zetRegWrite("$FormSetupCheckCheckboxMaintenanceStatus", 	$FormSetupCheckCheckboxMaintenanceStatus)
+	_zetRegWrite("$FormSetupCheckCheckboxTrigger", 				$FormSetupCheckCheckboxTrigger)
+	_zetRegWrite("$FormSetupCheckComboTimesMaintenance", 		$FormSetupCheckComboTimesMaintenance)
+	_zetRegWrite("$FormSetupCheckComboTimesTrigger", 			$FormSetupCheckComboTimesTrigger)
+
+	; Tab "Acknowledge"
+	_zetRegWrite("$FormSetupAcknowledgeEditDefaultMessage", 	$FormSetupAcknowledgeEditDefaultMessage)
+	_zetRegWrite("$FormSetupAcknowledgeCheckboxNeverAsk", 		$FormSetupAcknowledgeCheckboxNeverAsk)
+	_zetRegWrite("$FormSetupAcknowledgeCheckboxCloseProblems", 	$FormSetupAcknowledgeCheckboxCloseProblems)
+
+	RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local","", "REG_SZ", @HOUR & ":" & @MIN & ":" & @SEC & " - " & @MDAY & "." & @MON & "." & @YEAR)
 EndFunc
+
+; #############################################################################################################################################################
+
+Func _zetRegWrite($__sRegValueName, $__sRegValue, $__bNoRead = False)
+	If $__bNoRead = False Then
+		Local $__sCleanValueName = StringReplace($__sRegValueName, "$FormSetup", "")
+		RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local",$__sCleanValueName, "REG_SZ", StringReplace(GUICtrlRead($__sRegValue), @CRLF, "<br>"))
+	Else
+		RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local",$__sRegValueName, "REG_SZ", $__sRegValue)
+	EndIf
+EndFunc
+
 #EndRegion Funktionen
 
 
@@ -278,6 +416,7 @@ $FormSetupAPIButtonReadDataZabbixAgent = GUICtrlCreateButton("Read data from zab
 GUICtrlSetFont($FormSetupAPIButtonReadDataZabbixAgent, 10, 400, 0, "Arial")
 GUICtrlSetOnEvent($FormSetupAPIButtonReadDataZabbixAgent, "FormSetupAPIButtonReadDataZabbixAgentClick")
 $FormSetupTabSheetMaintenance = GUICtrlCreateTabItem("Maintenance")
+GUICtrlSetState($FormSetupTabSheetMaintenance,$GUI_SHOW)
 $FormSetupMaintenanceLabelPrefix = GUICtrlCreateLabel("Name Prefix", 16, 49, 82, 20, $SS_RIGHT)
 GUICtrlSetFont($FormSetupMaintenanceLabelPrefix, 10, 400, 0, "Arial")
 GUICtrlSetBkColor($FormSetupMaintenanceLabelPrefix, 0xFFFFFF)
@@ -288,8 +427,8 @@ GUICtrlSetFont($FormSetupMaintenanceLabelDescription, 10, 400, 0, "Arial")
 GUICtrlSetBkColor($FormSetupMaintenanceLabelDescription, 0xFFFFFF)
 $FormSetupMaintenanceInputDescription = GUICtrlCreateInput("USERDOMAIN\USERNAME", 104, 78, 321, 24)
 GUICtrlSetFont($FormSetupMaintenanceInputDescription, 10, 400, 0, "Arial")
-$FormSetupMaintenanceListTimes = GUICtrlCreateList("", 24, 134, 73, 4, BitOR($LBS_NOTIFY,$WS_VSCROLL))
-GUICtrlSetData($FormSetupMaintenanceListTimes, "0,5|1|12|18|2|24|4|48|72|8")
+$FormSetupMaintenanceListTimes = GUICtrlCreateList("", 24, 134, 73, 116, BitOR($LBS_NOTIFY,$WS_VSCROLL))
+GUICtrlSetData($FormSetupMaintenanceListTimes, "30m|1h|2h|4h|8h|12h|18h|24h|48h|72h|")
 GUICtrlSetFont($FormSetupMaintenanceListTimes, 10, 400, 0, "Arial")
 GUICtrlSetOnEvent($FormSetupMaintenanceListTimes, "FormSetupMaintenanceListTimesClick")
 $FormSetupMaintenanceButtonAdd = GUICtrlCreateButton("Add", 104, 166, 75, 24)
@@ -483,9 +622,22 @@ GUISetState(@SW_SHOW)
 
 GUICtrlSetState($FormSetupTabSheetZabbixAPI, $GUI_SHOW)
 GUICtrlSetState($FormSetupInfoEditGPOisActive, $GUI_HIDE)
-;~ _GUICtrlTab_SetCurFocus ( $hWnd, $iIndex )
 
+; Fill ListBox with ArrayValue
+GUICtrlSetData($FormSetupMaintenanceListTimes, "")
+$s_temp = ""
+For $n = 1 To $g_a_MaintenanceTimes[0] Step 1
+	$s_temp = $s_temp & _SecondsToTime($g_a_MaintenanceTimes[$n]) & "|"
+Next
+GUICtrlSetData($FormSetupMaintenanceListTimes, $s_temp)
 
+; Set TriggerColors
+GUICtrlSetBkColor($FormSetupTriggerLabelColorNotclassified, 	0x97AAB3)
+GUICtrlSetBkColor($FormSetupTriggerLabelColorInformation, 		0x7499FF)
+GUICtrlSetBkColor($FormSetupTriggerLabelColorWarning, 			0xFFC859)
+GUICtrlSetBkColor($FormSetupTriggerLabelColorAverage, 			0xFFA059)
+GUICtrlSetBkColor($FormSetupTriggerLabelColorHigh, 				0xE97659)
+GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 			0xE45959)
 
 
 While 1
