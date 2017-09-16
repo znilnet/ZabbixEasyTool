@@ -41,7 +41,7 @@
 				<property name="Top" vt="Int8">8</property>
 				<property name="Width" vt="Int16">444</property>
 				<property name="Height" vt="Int16">256</property>
-				<property name="ActivePage" vt="Ident">FormSetupTabSheetAcknowledge</property>
+				<property name="ActivePage" vt="Ident">FormSetupTabSheetInfo</property>
 				<property name="Constraints.MaxWidth" vt="Int32">1409482752</property>
 				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -314,7 +314,7 @@
 								<property name="Left" vt="Int8">12</property>
 								<property name="Top" vt="Int8">99</property>
 								<property name="Width" vt="Int8">73</property>
-								<property name="Height" vt="Int8">84</property>
+								<property name="Height" vt="Int8">68</property>
 								<property name="ItemHeight" vt="Int8">16</property>
 								<property name="Items.Strings" vt="List">
 									<list>
@@ -1104,7 +1104,7 @@
 						</object>
 					</components>
 				</object>
-				<object type="TTabSheet" name="Info">
+				<object type="TTabSheet" name="FormSetupTabSheetInfo">
 					<properties>
 						<property name="Caption" vt="String">Info</property>
 						<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
