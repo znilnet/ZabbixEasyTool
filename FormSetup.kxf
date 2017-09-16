@@ -318,16 +318,17 @@
 								<property name="ItemHeight" vt="Int8">16</property>
 								<property name="Items.Strings" vt="List">
 									<list>
-										<li vt="String">0,5</li>
-										<li vt="String">1</li>
-										<li vt="String">12</li>
-										<li vt="String">18</li>
-										<li vt="String">2</li>
-										<li vt="String">24</li>
-										<li vt="String">4</li>
-										<li vt="String">48</li>
-										<li vt="String">72</li>
-										<li vt="String">8</li>
+										<li vt="String">30m</li>
+										<li vt="String">1h</li>
+										<li vt="String">2h</li>
+										<li vt="String">4h</li>
+										<li vt="String">8h</li>
+										<li vt="String">12h</li>
+										<li vt="String">18h</li>
+										<li vt="String">24h</li>
+										<li vt="String">48h</li>
+										<li vt="String">72h</li>
+										<li vt="String"/>
 									</list>
 								</property>
 								<property name="TabOrder" vt="Int8">4</property>
