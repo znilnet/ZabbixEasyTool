@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <object type="TAForm" name="FormMain">
 	<properties>
-		<property name="Left" vt="Int16">611</property>
-		<property name="Top" vt="Int16">232</property>
+		<property name="Left" vt="Int16">624</property>
+		<property name="Top" vt="Int16">329</property>
 		<property name="Width" vt="Int16">420</property>
 		<property name="Height" vt="Int16">331</property>
 		<property name="Caption" vt="String">ZabbixEasyTool</property>
 		<property name="Color" vt="Ident">clBtnFace</property>
-		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+		<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 		<property name="Font.Color" vt="Ident">clWindowText</property>
-		<property name="Font.Height" vt="Int8">-11</property>
-		<property name="Font.Name" vt="String">MS Sans Serif</property>
+		<property name="Font.Height" vt="Int8">-13</property>
+		<property name="Font.Name" vt="String">Arial Narrow</property>
 		<property name="Font.Style" vt="Set"/>
 		<property name="OldCreateOrder" vt="False">False</property>
 		<property name="Visible" vt="True">True</property>
@@ -31,18 +31,47 @@
 		<property name="FormOptVarScope" vt="Int8">0</property>
 		<property name="Resizing" vt="Set"/>
 		<property name="PixelsPerInch" vt="Int8">96</property>
-		<property name="TextHeight" vt="Int8">13</property>
+		<property name="TextHeight" vt="Int8">16</property>
 	</properties>
 	<components>
-		<object type="TAPic" name="FormMainPicStatus">
+		<object type="TAButton" name="FormMainButtonMaintenanceDelete">
 			<properties>
-				<property name="Left" vt="Int8">0</property>
-				<property name="Top" vt="Int8">0</property>
-				<property name="Width" vt="Int16">404</property>
-				<property name="Height" vt="Int8">84</property>
-				<property name="CtrlStyle" vt="Int32">1342308622</property>
+				<property name="Left" vt="Int16">256</property>
+				<property name="Top" vt="Int8">89</property>
+				<property name="Width" vt="Int8">99</property>
+				<property name="Height" vt="Int8">30</property>
+				<property name="Caption" vt="String">Delete all</property>
+				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clWindowText</property>
+				<property name="Font.Height" vt="Int8">-16</property>
+				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Style" vt="Set"/>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">4</property>
+				<property name="Color" vt="Ident">clBtnFace</property>
+				<property name="CtrlStyle" vt="Int32">1342373888</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
-				<property name="TabOrder" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAButton" name="FormMainButtonMaintenanceSet">
+			<properties>
+				<property name="Left" vt="Int16">152</property>
+				<property name="Top" vt="Int8">89</property>
+				<property name="Width" vt="Int8">99</property>
+				<property name="Height" vt="Int8">30</property>
+				<property name="Caption" vt="String">Set</property>
+				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clWindowText</property>
+				<property name="Font.Height" vt="Int8">-16</property>
+				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Style" vt="Set"/>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">3</property>
+				<property name="Color" vt="Ident">clBtnFace</property>
+				<property name="CtrlStyle" vt="Int32">1342373888</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
 				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
 			</properties>
 			<components/>
@@ -51,14 +80,59 @@
 			<properties>
 				<property name="Left" vt="Int8">0</property>
 				<property name="Top" vt="Int8">120</property>
-				<property name="Width" vt="Int16">402</property>
-				<property name="Height" vt="Int16">134</property>
+				<property name="Width" vt="Int16">404</property>
+				<property name="Height" vt="Int16">142</property>
 				<property name="CtrlStyle" vt="Int32">1342373901</property>
 				<property name="CtrlExStyle" vt="Int16">512</property>
 				<property name="Resizing" vt="Set"/>
 				<property name="Columns" vt="Collection">
 					<collection/>
 				</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TACombo" name="FormMainComboTimes">
+			<properties>
+				<property name="Left" vt="Int8">48</property>
+				<property name="Top" vt="Int8">90</property>
+				<property name="Width" vt="Int8">99</property>
+				<property name="Height" vt="Int8">25</property>
+				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clWindowText</property>
+				<property name="Font.Height" vt="Int8">-16</property>
+				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Style" vt="Set"/>
+				<property name="ItemHeight" vt="Int8">20</property>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">2</property>
+				<property name="Text" vt="String">FormMainComboTimes</property>
+				<property name="CtrlStyle" vt="Int32">1342374466</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TALabel" name="FormMainLabelStatus">
+			<properties>
+				<property name="Left" vt="Int8">0</property>
+				<property name="Top" vt="Int8">0</property>
+				<property name="Width" vt="Int16">404</property>
+				<property name="Height" vt="Int8">89</property>
+				<property name="AutoSize" vt="False">False</property>
+				<property name="Caption" vt="String">No Maintenance</property>
+				<property name="Color" vt="Ident">clGreen</property>
+				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clWhite</property>
+				<property name="Font.Height" vt="Int8">-37</property>
+				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Style" vt="Set"/>
+				<property name="ParentColor" vt="False">False</property>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">1</property>
+				<property name="HaveVariable" vt="False">False</property>
+				<property name="CtrlStyle" vt="Int32">1342309121</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set"/>
 			</properties>
 			<components/>
 		</object>
