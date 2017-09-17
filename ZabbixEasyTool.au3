@@ -98,6 +98,11 @@ Func FormMainButtonSetupClick()
 	GUISetState(@SW_SHOW, $FormSetup)
 	GUISetState(@SW_HIDE, $FormMain)
 EndFunc
+
+; #############################################################################################################################################################
+Func FormMainLabelStatusClick()
+	_CheckMaintenanceStatus()
+EndFunc
 ; #############################################################################################################################################################
 Func FormSetupAPIButtonReadDataZabbixAgentClick()
 EndFunc
@@ -267,10 +272,56 @@ EndFunc
 ; #############################################################################################################################################################
 Func _CheckMaintenanceStatus()
 ;~ 	MsgBox(64, "Check Maintenance Status", "...")
-	Local $__sToken = _zbx_Login( GUICtrlRead($FormSetupAPIInputURL), $FormSetupAPIInputUsername, $FormSetupAPIInputPassword)
-	If $__sToken = "" Then
+	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
+	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
+	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
+	Local $__zbxHostname = GUICtrlRead($FormSetupAPIInputHost)
+
+	Local $__zbxSessionId = _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
+	If $__zbxSessionId = "" Then
 		GUICtrlSetBkColor($FormMainLabelStatus, 0xFF0000)
 		GUICtrlSetData($FormMainLabelStatus, "API Login Failure")
+		Return
+	EndIf
+	GUICtrlSetData($FormMainLabelStatus, "Logged in ...")
+	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
+	If $__zbxSessionId = "" Then
+		GUICtrlSetBkColor($FormMainLabelStatus, 0xFF0000)
+		GUICtrlSetData($FormMainLabelStatus, 'Host "' & $__zbxHostname & '" not found"')
+		_zbx_Logout( $__zbxURL, $__zbxSessionId)
+		Return
+	EndIf
+	GUICtrlSetData($FormMainLabelStatus, "Host found ..")
+	Local $__aMaintenanceIds = _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, "")
+;~ 	_ArrayDisplay($__aMaintenanceIds, "$__aMaintenanceIds")
+	If $__aMaintenanceIds[0][0] = 0 Then
+		GUICtrlSetBkColor($FormMainLabelStatus, 0x008800)
+		GUICtrlSetData($FormMainLabelStatus, "no maintenance periods found")
+	Else
+		; there are maintenance periods, find a active one
+		Local $__dCurrentTime = _DateDiff('s', "1970/01/01 00:00:00", _NowCalc())
+		; $__aMaintenanceIds[x][1] = Id
+		; $__aMaintenanceIds[x][2] = Name
+		; $__aMaintenanceIds[x][3] = active_since
+		; $__aMaintenanceIds[x][4] = active_till
+		Local $__iMaintenanceTimeTill = 0
+		Local $__sMaintenanceName = ""
+		For $t = 1 To $__aMaintenanceIds[0][0] Step 1
+			If $__dCurrentTime > $__aMaintenanceIds[$t][3] Or $__dCurrentTime < $__aMaintenanceIds[$t][4] Then
+				If $__iMaintenanceTimeTill < $__aMaintenanceIds[$t][4] Then
+					$__iMaintenanceTimeTill = $__aMaintenanceIds[$t][4]
+					$__sMaintenanceName = $__aMaintenanceIds[$t][2]
+				EndIf
+			EndIf
+		Next
+		GUICtrlSetBkColor($FormMainLabelStatus, 0x880000)
+		GUICtrlSetData($FormMainLabelStatus, $__sMaintenanceName & @CRLF & $__iMaintenanceTimeTill)
+	EndIf
+
+
+
+	If $__zbxSessionId <> "" Then
+		_zbx_Logout( $__zbxURL, $__zbxSessionId)
 	EndIf
 EndFunc
 
@@ -331,32 +382,32 @@ Func _TimeToSeconds($__sTime)
 	Local $__iFactor = 1
 	Local $__aTime = StringSplit($__sTime, "")
 	For $i = $__aTime[0] To 1 Step -1
-		ConsoleWrite("$i = " & $i & @CRLF)
+;~ 		ConsoleWrite("$i = " & $i & @CRLF)
 		Switch $__aTime[$i]
 			Case "s"
 				$__iFactor = 1
-				ConsoleWrite("$__iFactor = 1" & @CRLF)
+;~ 				ConsoleWrite("$__iFactor = 1" & @CRLF)
 			Case "m"
 				$__iFactor = 60
-				ConsoleWrite("$__iFactor = 60" & @CRLF)
+;~ 				ConsoleWrite("$__iFactor = 60" & @CRLF)
 			Case "h"
 				$__iFactor = 3600
-				ConsoleWrite("$__iFactor = 3600" & @CRLF)
+;~ 				ConsoleWrite("$__iFactor = 3600" & @CRLF)
 		EndSwitch
 		If ($i - 1) > 0 Then
-			ConsoleWrite("$i - 1 ist > 0" & @CRLF)
-			ConsoleWrite('StringRegExp($__aTime[$i - 2], "^[01723456789]") = ' & StringRegExp($__aTime[$i - 2], "^[01723456789]") & @CRLF)
+;~ 			ConsoleWrite("$i - 1 ist > 0" & @CRLF)
+;~ 			ConsoleWrite('StringRegExp($__aTime[$i - 2], "^[01723456789]") = ' & StringRegExp($__aTime[$i - 2], "^[01723456789]") & @CRLF)
 			If StringRegExp($__aTime[$i - 2], "^[01723456789]") = 1 And ($i - 2) <> 0 Then
-				ConsoleWrite("IsNumber($__aTime[$i - 2]) And ($i - 2) > 0" & @CRLF)
+;~ 				ConsoleWrite("IsNumber($__aTime[$i - 2]) And ($i - 2) > 0" & @CRLF)
 				$__iResult = $__iResult + (Int($__aTime[$i - 2] & $__aTime[$i - 1]) * $__iFactor)
 				$i = $i - 2
 			Else
-				ConsoleWrite("Keine Zahl oder $i -2 ist 0" & @CRLF)
+;~ 				ConsoleWrite("Keine Zahl oder $i -2 ist 0" & @CRLF)
 				$__iResult = $__iResult + ($__aTime[$i - 1] * $__iFactor)
 				$i = $i - 1
 			EndIf
 		Else
-			ConsoleWrite("$i - 1 ist 0" & @CRLF)
+;~ 			ConsoleWrite("$i - 1 ist 0" & @CRLF)
 			$__iResult = $__iResult + ($__aTime[$i - 1] * $__iFactor)
 		    $i = $i - 1
 		EndIf
@@ -513,7 +564,7 @@ Func _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbx_Login", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	MsgBox(0, "_zbx_Login", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -537,7 +588,7 @@ Func _zbx_Logout( $__zbxURL, $__zbxSessionId)
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbx_Logout", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	MsgBox(0, "_zbx_Logout", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -554,7 +605,7 @@ EndFunc
 Func _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
 	Local $__zbxJSON = '{"params":{"filter":{"name":"' & $__zbxHostname & '"},"output":["hostid"]},"jsonrpc": "2.0","method": "host.get","auth": "' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
-	Local $__zbxHostId = 0
+	Local $__zbxHostId = ""
 	$__oHTTP.Open("POST", $__zbxURL , False)
     $__oHTTP.Option("WinHttpRequestOption_SslErrorIgnoreFlags") = 0x3300
 	$__oHTTP.SetRequestHeader("Content-Type", "application/json-rpc")
@@ -576,9 +627,15 @@ EndFunc
 
 ; #############################################################################################################################################################
 Func _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxFilterByName = "")
+	Local $__bSkip = False
 	Local $__zbxJSON = '{"params":{"output":"extend","selectHosts":"refer","selectGroups": "refer","hostids": "' & $__zbxHostId & '"},"jsonrpc": "2.0","method": "maintenance.get","auth": "' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
-	Local $__a_zbxHostMaintenanceId[1] = [ 0 ]
+	Local $__a_zbxHostMaintenanceId[1][5]
+	$__a_zbxHostMaintenanceId[0][0] = 0
+	$__a_zbxHostMaintenanceId[0][1] = "maintenanceid"
+	$__a_zbxHostMaintenanceId[0][2] = "name"
+	$__a_zbxHostMaintenanceId[0][3] = "active_since"
+	$__a_zbxHostMaintenanceId[0][4] = "active_till"
 	$__oHTTP.Open("POST", $__zbxURL , False)
     $__oHTTP.Option("WinHttpRequestOption_SslErrorIgnoreFlags") = 0x3300
 	$__oHTTP.SetRequestHeader("Content-Type", "application/json-rpc")
@@ -590,21 +647,35 @@ Func _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbx
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
 			If StringInStr($__atemp[$i], "maintenanceid") > 0 Then
+				$__bSkip = True
 				If $__zbxFilterByName <> "" Then
 					For $j = 1 To 12 Step 1
 						If StringInStr($__atemp[$i + $j], "ZabbixEasy") > 0 Then
-							$__a_zbxHostMaintenanceId[0] = $__a_zbxHostMaintenanceId[0] + 1
-							ReDim $__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0] + 1 ]
-							$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0] ] = StringRegExpReplace($__atemp[$i + 1], '[^A-Za-z0-9_().+\%\-\s]+', "")
+							$__a_zbxHostMaintenanceId[0][0] = $__a_zbxHostMaintenanceId[0][0] + 1
+							ReDim $__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0] + 1 ][5]
+							$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] ][1] = StringRegExpReplace($__atemp[$i + 1], '[^A-Za-z0-9_().+\%\-\s]+', "")
 							$i = $i + 1
+							$__bSkip = False
 							ExitLoop
 						EndIf
 					Next
 				Else
-					$__a_zbxHostMaintenanceId[0] = $__a_zbxHostMaintenanceId[0] + 1
-					ReDim $__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0] + 1 ]
-					$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0] ] = StringRegExpReplace($__atemp[$i + 1], '[^A-Za-z0-9_().+\%\-\s]+', "")
+					$__a_zbxHostMaintenanceId[0][0] = $__a_zbxHostMaintenanceId[0][0] + 1
+					ReDim $__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] + 1 ][5]
+					$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] ][1] = StringRegExpReplace($__atemp[$i + 1], '[^A-Za-z0-9_().+\%\-\s]+', "")
 					$i = $i + 1
+					$__bSkip = False
+				EndIf
+			EndIf
+			If $__bSkip = False Then
+				If StringInStr($__atemp[$i], "name") > 0 Then
+					$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] ][2] = StringTrimRight(StringTrimLeft($__atemp[$i + 1], 1), 1)
+				EndIf
+				If StringInStr($__atemp[$i], "active_since") > 0 Then
+					$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] ][3] = StringRegExpReplace($__atemp[$i + 1], '[^A-Za-z0-9_().+\%\-\s]+', "")
+				EndIf
+				If StringInStr($__atemp[$i], "active_till") > 0 Then
+					$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] ][4] = StringRegExpReplace($__atemp[$i + 1], '[^A-Za-z0-9_().+\%\-\s]+', "")
 				EndIf
 			EndIf
 		Next
@@ -776,15 +847,16 @@ EndFunc
 
 
 #Region ### START Koda GUI section ### Form=C:\_AutoIt\ZabbixEasyTool\FormMain.kxf
-$FormMain = GUICreate("ZabbixEasyTool", 405, 299, -1, -1, BitOR($GUI_SS_DEFAULT_GUI,$WS_SIZEBOX,$WS_THICKFRAME), BitOR($WS_EX_TOPMOST,$WS_EX_WINDOWEDGE))
+$FormMain = GUICreate("ZabbixEasyTool", 405, 299, -1, -1, -1, BitOR($WS_EX_TOPMOST,$WS_EX_WINDOWEDGE))
 GUISetFont(10, 400, 0, "Arial")
 GUISetOnEvent($GUI_EVENT_CLOSE, "FormMainClose")
 GUISetOnEvent($GUI_EVENT_MINIMIZE, "FormMainMinimize")
 GUISetOnEvent($GUI_EVENT_RESTORE, "FormMainRestore")
-$FormMainLabelStatus = GUICtrlCreateLabel("No Maintenance", 0, 0, 404, 89, BitOR($SS_CENTER,$SS_CENTERIMAGE))
+$FormMainLabelStatus = GUICtrlCreateLabel("unknown", 0, 0, 404, 89, BitOR($SS_CENTER,$SS_CENTERIMAGE))
 GUICtrlSetFont(-1, 28, 400, 0, "Arial")
 GUICtrlSetColor(-1, 0xFFFFFF)
-GUICtrlSetBkColor(-1, 0x008000)
+GUICtrlSetBkColor(-1, 0x808080)
+GUICtrlSetOnEvent(-1, "FormMainLabelStatusClick")
 $FormMainComboTimes = GUICtrlCreateCombo("FormMainComboTimes", 48, 90, 99, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
 GUICtrlSetFont(-1, 12, 400, 0, "Arial")
 $FormMainButtonMaintenanceSet = GUICtrlCreateButton("Set", 152, 89, 99, 28)
