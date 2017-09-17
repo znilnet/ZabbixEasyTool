@@ -28,7 +28,7 @@ Opt("GUIOnEventMode", 1)
 
 ; Für die FormMain
 Global $FormMain, $FormMainPicStatus, $FormMainListViewTriggers, $FormMainLabelStatus, $FormMainComboTimes, $FormMainButtonMaintenanceSet
-Global $FormMainButtonMaintenanceDelete, $FormMainButtonAcknowledge, $FormMainButtonSetup
+Global $FormMainButtonMaintenanceDelete, $FormMainButtonAcknowledge, $FormMainButtonSetup, $FormMainLabelStatusLine2
 
 
 ; Für die FormSetup
@@ -83,8 +83,45 @@ EndFunc
 
 ; #############################################################################################################################################################
 Func FormMainButtonMaintenanceSetClick()
+	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
+	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
+	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
+	Local $__zbxHostname = GUICtrlRead($FormSetupAPIInputHost)
+	Local $__zbxSessionId = _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
+	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
+	Local $__zbxName = _ReplaceEnviromentVariables(GUICtrlRead($FormSetupMaintenanceInputPrefix)) & "- " & $__zbxHostname & " -- " & @YEAR & "-" & @MON & "-" & @MDAY & " - " & @HOUR & ":" & @MIN & ":" & @SEC
+	Local $__zbxDescription = _ReplaceEnviromentVariables(GUICtrlRead($FormSetupMaintenanceInputDescription))
+	Local $__zbxDurationTime = _TimeToSeconds(GUICtrlRead($FormMainComboTimes))
+	If _zbx_HostAddMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxName, $__zbxDescription, $__zbxDurationTime) <> "" Then
+		Sleep(1000)
+		_CheckMaintenanceStatus()
+	Else
+		GUICtrlSetBkColor($FormMainLabelStatus, 0xFF0000)
+		GUICtrlSetData($FormMainLabelStatus, "API ERROR")
+		GUICtrlSetBkColor($FormMainLabelStatusLine2, 0xFF0000)
+		GUICtrlSetData($FormMainLabelStatusLine2, "Failure adding Maintenance")
+	EndIf
+	If $__zbxSessionId <> "" Then
+		_zbx_Logout( $__zbxURL, $__zbxSessionId)
+	EndIf
 EndFunc
 
+; #############################################################################################################################################################
+Func _ReplaceEnviromentVariables($__SourceText)
+	;~ 	Local $__repPID = Run(@ComSpec & " /c set", @SystemDir, @SW_HIDE, $STDOUT_CHILD)
+	;~ 	Local $__repLine
+	;~ 	While 1
+	;~ 		$__repLine = $__repLine & StdoutRead($PID)
+	;~ 		If @error Then ExitLoop
+	;~ 	Wend
+	;~ 	Local $
+	;~ 	MsgBox(0, "SET", $line)
+	Local $__sReturn = StringReplace($__SourceText, "%USERNAME%", @UserName)
+	$__sReturn = StringReplace($__sReturn, "%USERDOMAIN%", EnvGet("USERDOMAIN"))
+	$__sReturn = StringReplace($__sReturn, "%COMPUTERNAME%", @ComputerName)
+	$__sReturn = StringReplace($__sReturn, "\", "\\")
+	Return $__sReturn
+EndFunc
 ; #############################################################################################################################################################
 Func FormMainButtonMaintenanceDeleteClick()
 EndFunc
@@ -271,35 +308,50 @@ EndFunc
 ; #############################################################################################################################################################
 ; #############################################################################################################################################################
 Func _CheckMaintenanceStatus()
-;~ 	MsgBox(64, "Check Maintenance Status", "...")
 	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
 	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
 	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
 	Local $__zbxHostname = GUICtrlRead($FormSetupAPIInputHost)
-
 	Local $__zbxSessionId = _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
 	If $__zbxSessionId = "" Then
 		GUICtrlSetBkColor($FormMainLabelStatus, 0xFF0000)
-		GUICtrlSetData($FormMainLabelStatus, "API Login Failure")
+		GUICtrlSetData($FormMainLabelStatus, "API Login")
+		GUICtrlSetBkColor($FormMainLabelStatusLine2, 0xFF0000)
+		GUICtrlSetData($FormMainLabelStatusLine2, "Failure")
+		GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
+		GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
+		GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
 		Return
 	EndIf
 	GUICtrlSetData($FormMainLabelStatus, "Logged in ...")
+	GUICtrlSetData($FormMainLabelStatusLine2, "")
 	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
-	If $__zbxSessionId = "" Then
+	If $__zbxHostId = "" Then
 		GUICtrlSetBkColor($FormMainLabelStatus, 0xFF0000)
 		GUICtrlSetData($FormMainLabelStatus, 'Host "' & $__zbxHostname & '" not found"')
 		_zbx_Logout( $__zbxURL, $__zbxSessionId)
+		GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
+		GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
+		GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
 		Return
 	EndIf
 	GUICtrlSetData($FormMainLabelStatus, "Host found ..")
+	GUICtrlSetData($FormMainLabelStatusLine2, "")
+	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_ENABLE)
+	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_ENABLE)
+	GUICtrlSetState($FormMainComboTimes, $GUI_ENABLE)
 	Local $__aMaintenanceIds = _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, "")
 ;~ 	_ArrayDisplay($__aMaintenanceIds, "$__aMaintenanceIds")
 	If $__aMaintenanceIds[0][0] = 0 Then
 		GUICtrlSetBkColor($FormMainLabelStatus, 0x008800)
-		GUICtrlSetData($FormMainLabelStatus, "no maintenance periods found")
+		GUICtrlSetBkColor($FormMainLabelStatusLine2, 0x008800)
+		GUICtrlSetData($FormMainLabelStatus, "no maintenance")
+		GUICtrlSetData($FormMainLabelStatusLine2, "periods found")
 	Else
 		; there are maintenance periods, find a active one
-		Local $__dCurrentTime = _DateDiff('s', "1970/01/01 00:00:00", _NowCalc())
+		Local $__LocalTimeStructUTC = _Date_Time_GetSystemTime()
+		Local $__dCurrentTime = _DateDiff('s', "1970/01/01 00:00:00", _Date_Time_SystemTimeToDateTimeStr($__LocalTimeStructUTC, 1))
+;~ 		Local $__dCurrentTime = _DateDiff('s', "1970/01/01 00:00:00", _NowCalc())
 		; $__aMaintenanceIds[x][1] = Id
 		; $__aMaintenanceIds[x][2] = Name
 		; $__aMaintenanceIds[x][3] = active_since
@@ -307,15 +359,27 @@ Func _CheckMaintenanceStatus()
 		Local $__iMaintenanceTimeTill = 0
 		Local $__sMaintenanceName = ""
 		For $t = 1 To $__aMaintenanceIds[0][0] Step 1
-			If $__dCurrentTime > $__aMaintenanceIds[$t][3] Or $__dCurrentTime < $__aMaintenanceIds[$t][4] Then
+			If $__dCurrentTime > $__aMaintenanceIds[$t][3] And $__dCurrentTime < $__aMaintenanceIds[$t][4] Then
 				If $__iMaintenanceTimeTill < $__aMaintenanceIds[$t][4] Then
 					$__iMaintenanceTimeTill = $__aMaintenanceIds[$t][4]
 					$__sMaintenanceName = $__aMaintenanceIds[$t][2]
 				EndIf
 			EndIf
 		Next
-		GUICtrlSetBkColor($FormMainLabelStatus, 0x880000)
-		GUICtrlSetData($FormMainLabelStatus, $__sMaintenanceName & @CRLF & $__iMaintenanceTimeTill)
+		If $__iMaintenanceTimeTill <> 0 Then
+			GUICtrlSetBkColor($FormMainLabelStatus, 0x880000)
+			GUICtrlSetBkColor($FormMainLabelStatusLine2, 0x880000)
+			GUICtrlSetFont($FormMainLabelStatus, 14, 400, 0, "Arial")
+			GUICtrlSetFont($FormMainLabelStatusLine2, 14, 400, 0, "Arial")
+			GUICtrlSetData($FormMainLabelStatus, $__sMaintenanceName)
+			GUICtrlSetData($FormMainLabelStatusLine2, StringReplace(StringReplace(_SecondsToTime($__iMaintenanceTimeTill - $__dCurrentTime), "h", "h "),"m", "m "))
+		Else
+			GUICtrlSetBkColor($FormMainLabelStatus, 0x008800)
+			GUICtrlSetBkColor($FormMainLabelStatusLine2, 0x008800)
+			GUICtrlSetData($FormMainLabelStatus, "no active maintenance")
+			GUICtrlSetData($FormMainLabelStatusLine2, "periods found")
+		EndIf
+
 	EndIf
 
 
@@ -682,7 +746,7 @@ Func _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbx
 	EndIf
 	Return $__a_zbxHostMaintenanceId
 EndFunc
-
+_Date_Time_GetTimeZoneInformation()
 ; #############################################################################################################################################################
 Func _zbx_HostAddMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxName, $__zbxDescription, $__zbxDurationTime = 3600)
 	Local $__StartTimeStructUTC = _Date_Time_GetSystemTime()
@@ -693,7 +757,7 @@ Func _zbx_HostAddMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxNam
         '"maintenance_type":"0","description":" ' & $__zbxDescription & '","active_since":"' & $__StartTimeUTC & '","active_till":"' & $__EndTimeUTC & '",' & _
         '"timeperiods":[{"timeperiod_type":0,"start_date":"' & $__StartTimeUTC & '","period":' & $__EndTimeUTC & '}]}],"auth":"' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
-	Local $__zbxMaintenanceId = 0
+	Local $__zbxMaintenanceId = ""
 	$__oHTTP.Open("POST", $__zbxURL , False)
     $__oHTTP.Option("WinHttpRequestOption_SslErrorIgnoreFlags") = 0x3300
 	$__oHTTP.SetRequestHeader("Content-Type", "application/json-rpc")
@@ -701,6 +765,7 @@ Func _zbx_HostAddMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxNam
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
 ;~ 	MsgBox(0, "_zbx_HostAddMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	ConsoleWrite($__zbxJSON & @CRLF)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -847,31 +912,36 @@ EndFunc
 
 
 #Region ### START Koda GUI section ### Form=C:\_AutoIt\ZabbixEasyTool\FormMain.kxf
-$FormMain = GUICreate("ZabbixEasyTool", 405, 299, -1, -1, -1, BitOR($WS_EX_TOPMOST,$WS_EX_WINDOWEDGE))
+$FormMain = GUICreate("ZabbixEasyTool", 404, 314, -1, -1, -1, BitOR($WS_EX_TOPMOST,$WS_EX_WINDOWEDGE))
 GUISetFont(10, 400, 0, "Arial")
 GUISetOnEvent($GUI_EVENT_CLOSE, "FormMainClose")
 GUISetOnEvent($GUI_EVENT_MINIMIZE, "FormMainMinimize")
 GUISetOnEvent($GUI_EVENT_RESTORE, "FormMainRestore")
-$FormMainLabelStatus = GUICtrlCreateLabel("unknown", 0, 0, 404, 89, BitOR($SS_CENTER,$SS_CENTERIMAGE))
-GUICtrlSetFont(-1, 28, 400, 0, "Arial")
-GUICtrlSetColor(-1, 0xFFFFFF)
-GUICtrlSetBkColor(-1, 0x808080)
-GUICtrlSetOnEvent(-1, "FormMainLabelStatusClick")
+$FormMainLabelStatus = GUICtrlCreateLabel("unknown", 0, 0, 404, 44, BitOR($SS_CENTER,$SS_CENTERIMAGE))
+GUICtrlSetFont($FormMainLabelStatus, 28, 400, 0, "Arial")
+GUICtrlSetColor($FormMainLabelStatus, 0xFFFFFF)
+GUICtrlSetBkColor($FormMainLabelStatus, 0x808080)
+GUICtrlSetOnEvent($FormMainLabelStatus, "FormMainLabelStatusClick")
 $FormMainComboTimes = GUICtrlCreateCombo("FormMainComboTimes", 48, 90, 99, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
-GUICtrlSetFont(-1, 12, 400, 0, "Arial")
+GUICtrlSetFont($FormMainComboTimes, 12, 400, 0, "Arial")
 $FormMainButtonMaintenanceSet = GUICtrlCreateButton("Set", 152, 89, 99, 28)
-GUICtrlSetFont(-1, 12, 400, 0, "Arial")
-GUICtrlSetOnEvent(-1, "FormMainButtonMaintenanceSetClick")
+GUICtrlSetFont($FormMainButtonMaintenanceSet, 12, 400, 0, "Arial")
+GUICtrlSetOnEvent($FormMainButtonMaintenanceSet, "FormMainButtonMaintenanceSetClick")
 $FormMainListViewTriggers = GUICtrlCreateListView("", 0, 120, 404, 142)
 $FormMainButtonMaintenanceDelete = GUICtrlCreateButton("Delete all", 256, 89, 99, 28)
-GUICtrlSetFont(-1, 12, 400, 0, "Arial")
-GUICtrlSetOnEvent(-1, "FormMainButtonMaintenanceDeleteClick")
+GUICtrlSetFont($FormMainButtonMaintenanceDelete, 12, 400, 0, "Arial")
+GUICtrlSetOnEvent($FormMainButtonMaintenanceDelete, "FormMainButtonMaintenanceDeleteClick")
 $FormMainButtonAcknowledge = GUICtrlCreateButton("Acknowledge", 48, 265, 109, 28)
-GUICtrlSetFont(-1, 12, 400, 0, "Arial")
-GUICtrlSetOnEvent(-1, "FormMainButtonAcknowledgeClick")
+GUICtrlSetFont($FormMainButtonAcknowledge, 12, 400, 0, "Arial")
+GUICtrlSetOnEvent($FormMainButtonAcknowledge, "FormMainButtonAcknowledgeClick")
 $FormMainButtonSetup = GUICtrlCreateButton("Setup", 246, 265, 109, 28)
-GUICtrlSetFont(-1, 12, 400, 0, "Arial")
-GUICtrlSetOnEvent(-1, "FormMainButtonSetupClick")
+GUICtrlSetFont($FormMainButtonSetup, 12, 400, 0, "Arial")
+GUICtrlSetOnEvent($FormMainButtonSetup, "FormMainButtonSetupClick")
+$FormMainLabelStatusLine2 = GUICtrlCreateLabel("status", 0, 44, 404, 44, BitOR($SS_CENTER,$SS_CENTERIMAGE))
+GUICtrlSetFont($FormMainLabelStatusLine2, 28, 400, 0, "Arial")
+GUICtrlSetColor($FormMainLabelStatusLine2, 0xFFFFFF)
+GUICtrlSetBkColor($FormMainLabelStatusLine2, 0x808080)
+GUICtrlSetOnEvent($FormMainLabelStatusLine2, "FormMainLabelStatusClick")
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
 ;~ GUISetState(@SW_HIDE, $FormMain)
@@ -1146,7 +1216,8 @@ GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 			0xE45959)
 ;~ GUISetState(@SW_HIDE, $FormMain)
 ;~ MsgBox(262208,"TimeToSeconds",_TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesMaintenance)),10)
 ;~ exit
-
+;~ _ReplaceEnviromentVariables("TEST")
+;~ exit
 ; Startup
 _SettingsRead()
 ControlFocus($FormMain, "", $FormMainButtonMaintenanceSet)
