@@ -26,6 +26,9 @@ Opt("GUIOnEventMode", 1)
 ;      ###    ##     ## ##     ## #### ##     ## ########  ######## ######## ##    ##
 ;~ ####################################################################################
 
+; Für die FormMain
+Global $FormMain, $FormMainPicStatus, $FormMainListViewTriggers, $FormMainLabelStatus, $FormMainComboTimes, $FormMainButtonMaintenanceSet
+Global $FormMainButtonMaintenanceDelete, $FormMainButtonAcknowledge, $FormMainButtonSetup
 
 
 ; Für die FormSetup
@@ -79,6 +82,23 @@ Func FormMainRestore()
 EndFunc
 
 ; #############################################################################################################################################################
+Func FormMainButtonMaintenanceSetClick()
+EndFunc
+
+; #############################################################################################################################################################
+Func FormMainButtonMaintenanceDeleteClick()
+EndFunc
+
+; #############################################################################################################################################################
+Func FormMainButtonAcknowledgeClick()
+EndFunc
+; #############################################################################################################################################################
+
+Func FormMainButtonSetupClick()
+	GUISetState(@SW_SHOW, $FormSetup)
+	GUISetState(@SW_HIDE, $FormMain)
+EndFunc
+; #############################################################################################################################################################
 Func FormSetupAPIButtonReadDataZabbixAgentClick()
 EndFunc
 
@@ -88,7 +108,8 @@ EndFunc
 
 ; #############################################################################################################################################################
 Func FormSetupButtonCancelClick()
-	Exit
+	GUISetState(@SW_HIDE, $FormSetup)
+	GUISetState(@SW_SHOW, $FormMain)
 EndFunc
 
 ; #############################################################################################################################################################
@@ -99,7 +120,8 @@ EndFunc
 ; Alle Einstellungen in der Registry speichern
 Func FormSetupButtonOKClick()
 	_SettingsWrite()
-	Exit
+	GUISetState(@SW_HIDE, $FormSetup)
+	GUISetState(@SW_SHOW, $FormMain)
 EndFunc
 
 ; #############################################################################################################################################################
@@ -362,17 +384,34 @@ EndFunc
 
 
 
-Global $FormMain, $FormMainPicStatus, $FormMainListViewTriggers
 #Region ### START Koda GUI section ### Form=C:\_AutoIt\ZabbixEasyTool\FormMain.kxf
-$FormMain = GUICreate("ZabbixEasyTool", 405, 293, 611, 232, BitOR($GUI_SS_DEFAULT_GUI,$WS_SIZEBOX,$WS_THICKFRAME), BitOR($WS_EX_TOPMOST,$WS_EX_WINDOWEDGE))
+$FormMain = GUICreate("ZabbixEasyTool", 405, 299, -1, -1, BitOR($GUI_SS_DEFAULT_GUI,$WS_SIZEBOX,$WS_THICKFRAME), BitOR($WS_EX_TOPMOST,$WS_EX_WINDOWEDGE))
+GUISetFont(10, 400, 0, "Arial Narrow")
 GUISetOnEvent($GUI_EVENT_CLOSE, "FormMainClose")
 GUISetOnEvent($GUI_EVENT_MINIMIZE, "FormMainMinimize")
 GUISetOnEvent($GUI_EVENT_RESTORE, "FormMainRestore")
-$FormMainPicStatus = GUICtrlCreatePic("", 0, 0, 404, 84)
-$FormMainListViewTriggers = GUICtrlCreateListView("", 0, 120, 402, 134)
+$FormMainLabelStatus = GUICtrlCreateLabel("No Maintenance", 0, 0, 404, 89, BitOR($SS_CENTER,$SS_CENTERIMAGE))
+GUICtrlSetFont(-1, 28, 400, 0, "Arial Narrow")
+GUICtrlSetColor(-1, 0xFFFFFF)
+GUICtrlSetBkColor(-1, 0x008000)
+$FormMainComboTimes = GUICtrlCreateCombo("FormMainComboTimes", 48, 90, 99, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
+GUICtrlSetFont(-1, 12, 400, 0, "Arial Narrow")
+$FormMainButtonMaintenanceSet = GUICtrlCreateButton("Set", 152, 89, 99, 30)
+GUICtrlSetFont(-1, 12, 400, 0, "Arial Narrow")
+GUICtrlSetOnEvent(-1, "FormMainButtonMaintenanceSetClick")
+$FormMainListViewTriggers = GUICtrlCreateListView("", 0, 120, 404, 142)
+$FormMainButtonMaintenanceDelete = GUICtrlCreateButton("Delete all", 256, 89, 99, 30)
+GUICtrlSetFont(-1, 12, 400, 0, "Arial Narrow")
+GUICtrlSetOnEvent(-1, "FormMainButtonMaintenanceDeleteClick")
+$FormMainButtonAcknowledge = GUICtrlCreateButton("Acknowledge", 48, 265, 99, 30)
+GUICtrlSetFont(-1, 12, 400, 0, "Arial Narrow")
+GUICtrlSetOnEvent(-1, "FormMainButtonAcknowledgeClick")
+$FormMainButtonSetup = GUICtrlCreateButton("Setup", 256, 265, 99, 30)
+GUICtrlSetFont(-1, 12, 400, 0, "Arial Narrow")
+GUICtrlSetOnEvent(-1, "FormMainButtonSetupClick")
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
-GUISetState(@SW_HIDE, $FormMain)
+;~ GUISetState(@SW_HIDE, $FormMain)
 
 
 
@@ -619,6 +658,7 @@ GUICtrlSetColor($FormSetupInfoEditGPOisActive, 0xFFFF00)
 GUICtrlSetBkColor($FormSetupInfoEditGPOisActive, 0xFF0000)
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
+GUISetState(@SW_HIDE, $FormSetup)
 
 GUICtrlSetState($FormSetupTabSheetZabbixAPI, $GUI_SHOW)
 GUICtrlSetState($FormSetupInfoEditGPOisActive, $GUI_HIDE)

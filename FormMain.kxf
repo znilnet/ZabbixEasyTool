@@ -13,6 +13,7 @@
 		<property name="Font.Name" vt="String">Arial Narrow</property>
 		<property name="Font.Style" vt="Set"/>
 		<property name="OldCreateOrder" vt="False">False</property>
+		<property name="Position" vt="Ident">poDesktopCenter</property>
 		<property name="Visible" vt="True">True</property>
 		<property name="OnClose" vt="String">FormMainClose</property>
 		<property name="Style" vt="Int32">-1798438912</property>
@@ -69,7 +70,7 @@
 				<property name="Font.Name" vt="String">Arial Narrow</property>
 				<property name="Font.Style" vt="Set"/>
 				<property name="ParentFont" vt="False">False</property>
-				<property name="TabOrder" vt="Int8">3</property>
+				<property name="TabOrder" vt="Int8">2</property>
 				<property name="OnClick" vt="String">FormMainButtonMaintenanceSetClick</property>
 				<property name="Color" vt="Ident">clBtnFace</property>
 				<property name="CtrlStyle" vt="Int32">1342373888</property>
@@ -106,7 +107,7 @@
 				<property name="Font.Style" vt="Set"/>
 				<property name="ItemHeight" vt="Int8">20</property>
 				<property name="ParentFont" vt="False">False</property>
-				<property name="TabOrder" vt="Int8">2</property>
+				<property name="TabOrder" vt="Int8">1</property>
 				<property name="Text" vt="String">FormMainComboTimes</property>
 				<property name="CtrlStyle" vt="Int32">1342374466</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
@@ -130,7 +131,7 @@
 				<property name="Font.Style" vt="Set"/>
 				<property name="ParentColor" vt="False">False</property>
 				<property name="ParentFont" vt="False">False</property>
-				<property name="TabOrder" vt="Int8">1</property>
+				<property name="TabOrder" vt="Int8">0</property>
 				<property name="HaveVariable" vt="False">False</property>
 				<property name="CtrlStyle" vt="Int32">1342309121</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
