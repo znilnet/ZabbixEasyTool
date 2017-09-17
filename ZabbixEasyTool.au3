@@ -316,7 +316,87 @@ Func _SecondsToTime($__iSec)
 EndFunc   ;==>_SecondsToTime
 
 ; #############################################################################################################################################################
+Func _SettingsRead()
+	; Tab "Zabbix API"
 
+	_zetRegRead("$FormSetupAPIInputURL", 						$FormSetupAPIInputURL)
+	_zetRegRead("$FormSetupAPIInputHost", 						$FormSetupAPIInputHost)
+	_zetRegRead("$FormSetupAPIInputUsername", 					$FormSetupAPIInputUsername)
+	_zetRegRead("$FormSetupAPIInputPassword", 					$FormSetupAPIInputPassword)
+
+	; Tab "Maintenance"
+	_zetRegRead("$FormSetupMaintenanceInputPrefix", 			$FormSetupMaintenanceInputPrefix)
+	_zetRegRead("$FormSetupMaintenanceInputDescription", 		$FormSetupMaintenanceInputDescription)
+	GUICtrlSetData($FormSetupMaintenanceListTimes, "")
+	GUICtrlSetData($FormMainComboTimes, "")
+	If _zetRegRead("MaintenanceTimes", "", True) <> "" Then
+		$g_a_MaintenanceTimes = StringSplit(_zetRegRead("MaintenanceTimes", "", True), "|")
+	EndIf
+	Local $__s_temp = ""
+	For $n = 1 To $g_a_MaintenanceTimes[0] Step 1
+		$__s_temp = $__s_temp & _SecondsToTime($g_a_MaintenanceTimes[$n]) & "|"
+	Next
+	GUICtrlSetData($FormSetupMaintenanceListTimes, $__s_temp)
+;~ 	MsgBox(0, "$g_a_MaintenanceTimes[1]", $g_a_MaintenanceTimes[1])
+	GUICtrlSetData($FormMainComboTimes, $__s_temp, _SecondsToTime($g_a_MaintenanceTimes[1]))
+
+	; Tab "Trigger"
+	_zetRegRead("$FormSetupTriggerInputNotclassified", 			$FormSetupTriggerInputNotclassified)
+	_zetRegRead("$FormSetupTriggerInputInformation", 			$FormSetupTriggerInputInformation)
+	_zetRegRead("$FormSetupTriggerInputWarning", 				$FormSetupTriggerInputWarning)
+	_zetRegRead("$FormSetupTriggerInputAverage", 				$FormSetupTriggerInputAverage)
+	_zetRegRead("$FormSetupTriggerInputHigh", 					$FormSetupTriggerInputHigh)
+	_zetRegRead("$FormSetupTriggerInputDisaster", 				$FormSetupTriggerInputDisaster)
+
+	_zetRegRead("$FormSetupTriggerInputColorNotclassified", 	$FormSetupTriggerInputColorNotclassified)
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorNotclassified, GUICtrlRead($FormSetupTriggerInputColorNotclassified))
+	_zetRegRead("$FormSetupTriggerInputColorInformation", 		$FormSetupTriggerInputColorInformation)
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorInformation,	GUICtrlRead($FormSetupTriggerInputColorInformation))
+	_zetRegRead("$FormSetupTriggerInputColorWarning", 			$FormSetupTriggerInputColorWarning)
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorWarning, 		GUICtrlRead($FormSetupTriggerInputColorWarning))
+	_zetRegRead("$FormSetupTriggerInputColorAverage", 			$FormSetupTriggerInputColorAverage)
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorAverage, 		GUICtrlRead($FormSetupTriggerInputColorAverage))
+	_zetRegRead("$FormSetupTriggerInputColorHigh", 				$FormSetupTriggerInputColorHigh)
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorHigh, 			GUICtrlRead($FormSetupTriggerInputColorHigh))
+	_zetRegRead("$FormSetupTriggerInputColorDisaster", 			$FormSetupTriggerInputColorDisaster)
+	GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 		GUICtrlRead($FormSetupTriggerInputColorDisaster))
+
+	; Tab "Check"
+	_zetRegRead("$FormSetupCheckCheckboxMaintenanceStatus", 	$FormSetupCheckCheckboxMaintenanceStatus)
+	FormSetupCheckCheckboxMaintenanceStatusClick()
+	_zetRegRead("$FormSetupCheckCheckboxTrigger", 				$FormSetupCheckCheckboxTrigger)
+	FormSetupCheckCheckboxTriggerClick()
+	_zetRegRead("$FormSetupCheckComboTimesMaintenance", 		$FormSetupCheckComboTimesMaintenance)
+	_zetRegRead("$FormSetupCheckComboTimesTrigger", 			$FormSetupCheckComboTimesTrigger)
+
+	; Tab "Acknowledge"
+	_zetRegRead("$FormSetupAcknowledgeEditDefaultMessage", 	$FormSetupAcknowledgeEditDefaultMessage)
+	_zetRegRead("$FormSetupAcknowledgeCheckboxNeverAsk", 		$FormSetupAcknowledgeCheckboxNeverAsk)
+	_zetRegRead("$FormSetupAcknowledgeCheckboxCloseProblems", 	$FormSetupAcknowledgeCheckboxCloseProblems)
+
+;~ 	RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local","", "REG_SZ", @HOUR & ":" & @MIN & ":" & @SEC & " - " & @MDAY & "." & @MON & "." & @YEAR)
+EndFunc
+; #############################################################################################################################################################
+Func _zetRegRead($__sRegValueName, $__sRegValue, $__bNoRead = False)
+	Local $__sCleanValueName
+	If $__bNoRead = False Then
+		$__sCleanValueName = StringReplace($__sRegValueName, "$FormSetup", "")
+	Else
+		$__sCleanValueName = $__sRegValueName
+	EndIf
+	Local $__sValue = RegRead("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local", $__sCleanValueName)
+	If $__sValue <> "" And $__bNoRead = False Then
+		If StringInStr($__sCleanValueName, "Checkbox") = 0 Then
+			GUICtrlSetData($__sRegValue, StringReplace(RegRead("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local", $__sCleanValueName), "<br>", @CRLF))
+		Else
+			GUICtrlSetState($__sRegValue, RegRead("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local", $__sCleanValueName))
+			Return 0
+		EndIf
+	Else
+		Return $__sValue
+	EndIf
+EndFunc
+; #############################################################################################################################################################
 Func _SettingsWrite()
 	; Tab "Zabbix API"
 	_zetRegWrite("$FormSetupAPIInputURL", 						$FormSetupAPIInputURL)
@@ -358,7 +438,6 @@ Func _SettingsWrite()
 EndFunc
 
 ; #############################################################################################################################################################
-
 Func _zetRegWrite($__sRegValueName, $__sRegValue, $__bNoRead = False)
 	If $__bNoRead = False Then
 		Local $__sCleanValueName = StringReplace($__sRegValueName, "$FormSetup", "")
@@ -678,6 +757,12 @@ GUICtrlSetBkColor($FormSetupTriggerLabelColorWarning, 			0xFFC859)
 GUICtrlSetBkColor($FormSetupTriggerLabelColorAverage, 			0xFFA059)
 GUICtrlSetBkColor($FormSetupTriggerLabelColorHigh, 				0xE97659)
 GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 			0xE45959)
+
+
+; Startup
+_SettingsRead()
+ControlFocus($FormMain, "", $FormMainButtonMaintenanceSet)
+
 
 
 While 1
