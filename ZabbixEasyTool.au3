@@ -265,6 +265,11 @@ EndFunc
 ; #############################################################################################################################################################
 ; #############################################################################################################################################################
 ; #############################################################################################################################################################
+Func _CheckMaintenanceStatus()
+	MsgBox(64, "Check Maintenance Status", "...")
+EndFunc
+
+; #############################################################################################################################################################
 Func _TriggerInputColor()
 	GUICtrlSetData(@GUI_CtrlId,StringLeft(StringRegExpReplace(StringUpper(GUICtrlRead(@GUI_CtrlId)),"[^[01723456789ABCDEF]*", ""),6))
 EndFunc
@@ -314,6 +319,45 @@ Func _SecondsToTime($__iSec)
 	EndIf
 	Return $__sReturn
 EndFunc   ;==>_SecondsToTime
+
+; #############################################################################################################################################################
+Func _TimeToSeconds($__sTime)
+	Local $__iResult = 0
+	Local $__iFactor = 1
+	Local $__aTime = StringSplit($__sTime, "")
+	For $i = $__aTime[0] To 1 Step -1
+		ConsoleWrite("$i = " & $i & @CRLF)
+		Switch $__aTime[$i]
+			Case "s"
+				$__iFactor = 1
+				ConsoleWrite("$__iFactor = 1" & @CRLF)
+			Case "m"
+				$__iFactor = 60
+				ConsoleWrite("$__iFactor = 60" & @CRLF)
+			Case "h"
+				$__iFactor = 3600
+				ConsoleWrite("$__iFactor = 3600" & @CRLF)
+		EndSwitch
+		If ($i - 1) > 0 Then
+			ConsoleWrite("$i - 1 ist > 0" & @CRLF)
+			ConsoleWrite('StringRegExp($__aTime[$i - 2], "^[01723456789]") = ' & StringRegExp($__aTime[$i - 2], "^[01723456789]") & @CRLF)
+			If StringRegExp($__aTime[$i - 2], "^[01723456789]") = 1 And ($i - 2) <> 0 Then
+				ConsoleWrite("IsNumber($__aTime[$i - 2]) And ($i - 2) > 0" & @CRLF)
+				$__iResult = $__iResult + (Int($__aTime[$i - 2] & $__aTime[$i - 1]) * $__iFactor)
+				$i = $i - 2
+			Else
+				ConsoleWrite("Keine Zahl oder $i -2 ist 0" & @CRLF)
+				$__iResult = $__iResult + ($__aTime[$i - 1] * $__iFactor)
+				$i = $i - 1
+			EndIf
+		Else
+			ConsoleWrite("$i - 1 ist 0" & @CRLF)
+			$__iResult = $__iResult + ($__aTime[$i - 1] * $__iFactor)
+		    $i = $i - 1
+		EndIf
+	Next
+	Return $__iResult
+EndFunc
 
 ; #############################################################################################################################################################
 Func _SettingsRead()
@@ -759,11 +803,17 @@ GUICtrlSetBkColor($FormSetupTriggerLabelColorHigh, 				0xE97659)
 GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 			0xE45959)
 
 
+;~ GUISetState(@SW_HIDE, $FormMain)
+;~ MsgBox(262208,"TimeToSeconds",_TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesMaintenance)),10)
+;~ exit
+
 ; Startup
 _SettingsRead()
 ControlFocus($FormMain, "", $FormMainButtonMaintenanceSet)
 
-
+If GUICtrlRead($FormSetupCheckCheckboxMaintenanceStatus) = $GUI_CHECKED Then
+	AdlibRegister("_CheckMaintenanceStatus", _TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesMaintenance)) * 1000)
+EndIf
 
 While 1
 	Sleep(100)
