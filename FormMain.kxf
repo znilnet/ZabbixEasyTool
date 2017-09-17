@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <object type="TAForm" name="FormMain">
 	<properties>
-		<property name="Left" vt="Int16">645</property>
-		<property name="Top" vt="Int16">380</property>
+		<property name="Left" vt="Int16">619</property>
+		<property name="Top" vt="Int16">431</property>
 		<property name="Width" vt="Int16">420</property>
 		<property name="Height" vt="Int16">337</property>
 		<property name="Caption" vt="String">ZabbixEasyTool</property>
@@ -10,7 +10,7 @@
 		<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 		<property name="Font.Color" vt="Ident">clWindowText</property>
 		<property name="Font.Height" vt="Int8">-13</property>
-		<property name="Font.Name" vt="String">Arial Narrow</property>
+		<property name="Font.Name" vt="String">Arial</property>
 		<property name="Font.Style" vt="Set"/>
 		<property name="OldCreateOrder" vt="False">False</property>
 		<property name="Position" vt="Ident">poDesktopCenter</property>
@@ -40,12 +40,12 @@
 				<property name="Left" vt="Int16">256</property>
 				<property name="Top" vt="Int8">89</property>
 				<property name="Width" vt="Int8">99</property>
-				<property name="Height" vt="Int8">30</property>
+				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Delete all</property>
 				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-16</property>
-				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Name" vt="String">Arial</property>
 				<property name="Font.Style" vt="Set"/>
 				<property name="ParentFont" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">4</property>
@@ -62,12 +62,12 @@
 				<property name="Left" vt="Int16">152</property>
 				<property name="Top" vt="Int8">89</property>
 				<property name="Width" vt="Int8">99</property>
-				<property name="Height" vt="Int8">30</property>
+				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Set</property>
 				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-16</property>
-				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Name" vt="String">Arial</property>
 				<property name="Font.Style" vt="Set"/>
 				<property name="ParentFont" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">2</property>
@@ -103,9 +103,9 @@
 				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-16</property>
-				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Name" vt="String">Arial</property>
 				<property name="Font.Style" vt="Set"/>
-				<property name="ItemHeight" vt="Int8">20</property>
+				<property name="ItemHeight" vt="Int8">18</property>
 				<property name="ParentFont" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">1</property>
 				<property name="Text" vt="String">FormMainComboTimes</property>
@@ -127,7 +127,7 @@
 				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWhite</property>
 				<property name="Font.Height" vt="Int8">-37</property>
-				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Name" vt="String">Arial</property>
 				<property name="Font.Style" vt="Set"/>
 				<property name="ParentColor" vt="False">False</property>
 				<property name="ParentFont" vt="False">False</property>
@@ -143,13 +143,13 @@
 			<properties>
 				<property name="Left" vt="Int8">48</property>
 				<property name="Top" vt="Int16">265</property>
-				<property name="Width" vt="Int8">99</property>
-				<property name="Height" vt="Int8">30</property>
+				<property name="Width" vt="Int8">109</property>
+				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Acknowledge</property>
 				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-16</property>
-				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Name" vt="String">Arial</property>
 				<property name="Font.Style" vt="Set"/>
 				<property name="ParentFont" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">5</property>
@@ -163,15 +163,15 @@
 		</object>
 		<object type="TAButton" name="FormMainButtonSetup">
 			<properties>
-				<property name="Left" vt="Int16">256</property>
+				<property name="Left" vt="Int16">246</property>
 				<property name="Top" vt="Int16">265</property>
-				<property name="Width" vt="Int8">99</property>
-				<property name="Height" vt="Int8">30</property>
+				<property name="Width" vt="Int8">109</property>
+				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Setup</property>
 				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-16</property>
-				<property name="Font.Name" vt="String">Arial Narrow</property>
+				<property name="Font.Name" vt="String">Arial</property>
 				<property name="Font.Style" vt="Set"/>
 				<property name="ParentFont" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">6</property>
