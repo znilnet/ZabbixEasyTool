@@ -106,24 +106,33 @@ Func FormMainButtonMaintenanceSetClick()
 	EndIf
 EndFunc
 
-; #############################################################################################################################################################
-Func _ReplaceEnviromentVariables($__SourceText)
-	;~ 	Local $__repPID = Run(@ComSpec & " /c set", @SystemDir, @SW_HIDE, $STDOUT_CHILD)
-	;~ 	Local $__repLine
-	;~ 	While 1
-	;~ 		$__repLine = $__repLine & StdoutRead($PID)
-	;~ 		If @error Then ExitLoop
-	;~ 	Wend
-	;~ 	Local $
-	;~ 	MsgBox(0, "SET", $line)
-	Local $__sReturn = StringReplace($__SourceText, "%USERNAME%", @UserName)
-	$__sReturn = StringReplace($__sReturn, "%USERDOMAIN%", EnvGet("USERDOMAIN"))
-	$__sReturn = StringReplace($__sReturn, "%COMPUTERNAME%", @ComputerName)
-	$__sReturn = StringReplace($__sReturn, "\", "\\")
-	Return $__sReturn
-EndFunc
+
 ; #############################################################################################################################################################
 Func FormMainButtonMaintenanceDeleteClick()
+	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
+	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
+	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
+	Local $__zbxHostname = GUICtrlRead($FormSetupAPIInputHost)
+	Local $__zbxSessionId = _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
+	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
+	Local $__aMaintenanceIds = _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, _ReplaceEnviromentVariables(GUICtrlRead($FormSetupMaintenanceInputPrefix)))
+;~ 	_ArrayDisplay($__aMaintenanceIds, "$__aMaintenanceIds")
+		; $__aMaintenanceIds[x][1] = Id
+		; $__aMaintenanceIds[x][2] = Name
+		; $__aMaintenanceIds[x][3] = active_since
+		; $__aMaintenanceIds[x][4] = active_till
+	If $__aMaintenanceIds[0][0] > 0 Then
+		For $i = 1 To $__aMaintenanceIds[0][0] Step 1
+			If _zbxHostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__aMaintenanceIds[$i][1]) = $__aMaintenanceIds[$i][1] Then
+				; Maintenance was deleted!
+			Else
+				; There was an error!
+			EndIf
+		Next
+	EndIf
+	If $__zbxSessionId <> "" Then
+		_zbx_Logout( $__zbxURL, $__zbxSessionId)
+	EndIf
 EndFunc
 
 ; #############################################################################################################################################################
@@ -478,7 +487,22 @@ Func _TimeToSeconds($__sTime)
 	Next
 	Return $__iResult
 EndFunc
-
+; #############################################################################################################################################################
+Func _ReplaceEnviromentVariables($__SourceText)
+	;~ 	Local $__repPID = Run(@ComSpec & " /c set", @SystemDir, @SW_HIDE, $STDOUT_CHILD)
+	;~ 	Local $__repLine
+	;~ 	While 1
+	;~ 		$__repLine = $__repLine & StdoutRead($PID)
+	;~ 		If @error Then ExitLoop
+	;~ 	Wend
+	;~ 	Local $
+	;~ 	MsgBox(0, "SET", $line)
+	Local $__sReturn = StringReplace($__SourceText, "%USERNAME%", @UserName)
+	$__sReturn = StringReplace($__sReturn, "%USERDOMAIN%", EnvGet("USERDOMAIN"))
+	$__sReturn = StringReplace($__sReturn, "%COMPUTERNAME%", @ComputerName)
+	$__sReturn = StringReplace($__sReturn, "\", "\\")
+	Return $__sReturn
+EndFunc
 ; #############################################################################################################################################################
 Func _SettingsRead()
 	; Tab "Zabbix API"
@@ -716,7 +740,7 @@ Func _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbx
 					For $j = 1 To 12 Step 1
 						If StringInStr($__atemp[$i + $j], "ZabbixEasy") > 0 Then
 							$__a_zbxHostMaintenanceId[0][0] = $__a_zbxHostMaintenanceId[0][0] + 1
-							ReDim $__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0] + 1 ][5]
+							ReDim $__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] + 1 ][5]
 							$__a_zbxHostMaintenanceId[ $__a_zbxHostMaintenanceId[0][0] ][1] = StringRegExpReplace($__atemp[$i + 1], '[^A-Za-z0-9_().+\%\-\s]+', "")
 							$i = $i + 1
 							$__bSkip = False
