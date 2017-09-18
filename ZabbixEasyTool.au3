@@ -57,6 +57,9 @@ Global $FormSetupButtonOK, $FormSetupButtonCancel, $FormSetupButtonHelp, $FormSe
 Global $g_a_MaintenanceTimes[9] = [ 8, 1800, 3600, 7200, 14400, 28800, 86400, 172800, 259200 ]
 Local $s_temp = ""
 
+; Für den Countdown bei aktiver Maintenance
+Global $g_i_Countdown = 0
+
 #EndRegion Variablen
 
 #Region Funktionen
@@ -83,6 +86,10 @@ EndFunc
 
 ; #############################################################################################################################################################
 Func FormMainButtonMaintenanceSetClick()
+	GUISetCursor(15, 1, $FormMain)
+	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
+	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
+	GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
 	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
 	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
 	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
@@ -104,11 +111,19 @@ Func FormMainButtonMaintenanceSetClick()
 	If $__zbxSessionId <> "" Then
 		_zbx_Logout( $__zbxURL, $__zbxSessionId)
 	EndIf
+	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_ENABLE)
+	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_ENABLE)
+	GUICtrlSetState($FormMainComboTimes, $GUI_ENABLE)
+	GUISetCursor("", 1, $FormMain)
 EndFunc
 
 
 ; #############################################################################################################################################################
 Func FormMainButtonMaintenanceDeleteClick()
+	GUISetCursor(15, 1, $FormMain)
+	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
+	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
+	GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
 	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
 	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
 	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
@@ -123,7 +138,7 @@ Func FormMainButtonMaintenanceDeleteClick()
 		; $__aMaintenanceIds[x][4] = active_till
 	If $__aMaintenanceIds[0][0] > 0 Then
 		For $i = 1 To $__aMaintenanceIds[0][0] Step 1
-			If _zbxHostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__aMaintenanceIds[$i][1]) = $__aMaintenanceIds[$i][1] Then
+			If _zbx_HostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__aMaintenanceIds[$i][1]) = $__aMaintenanceIds[$i][1] Then
 				; Maintenance was deleted!
 			Else
 				; There was an error!
@@ -133,14 +148,37 @@ Func FormMainButtonMaintenanceDeleteClick()
 	If $__zbxSessionId <> "" Then
 		_zbx_Logout( $__zbxURL, $__zbxSessionId)
 	EndIf
+	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_ENABLE)
+	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_ENABLE)
+	GUICtrlSetState($FormMainComboTimes, $GUI_ENABLE)
+	GUISetCursor("", 1, $FormMain)
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormMainButtonAcknowledgeClick()
+	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
+	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
+	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
+	Local $__zbxHostname = GUICtrlRead($FormSetupAPIInputHost)
+	Local $__zbxSessionId = _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
+	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
+	;~ 	$__a_zbxHostTriggers[0][0] = 0
+	;~ 	$__a_zbxHostTriggers[0][1] = "triggerid"
+	;~ 	$__a_zbxHostTriggers[0][2] = "description"
+	;~ 	$__a_zbxHostTriggers[0][3] = "priority"
+	Local $__a_zbxHostTriggers = _zbx_HostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
+;~ 	_ArrayDisplay($__a_zbxHostTriggers)
+
+
+
+	If $__zbxSessionId <> "" Then
+		_zbx_Logout( $__zbxURL, $__zbxSessionId)
+	EndIf
 EndFunc
 ; #############################################################################################################################################################
 
 Func FormMainButtonSetupClick()
+	AdlibUnRegister("_CheckMaintenanceStatus")
 	GUISetState(@SW_SHOW, $FormSetup)
 	GUISetState(@SW_HIDE, $FormMain)
 EndFunc
@@ -161,6 +199,9 @@ EndFunc
 Func FormSetupButtonCancelClick()
 	GUISetState(@SW_HIDE, $FormSetup)
 	GUISetState(@SW_SHOW, $FormMain)
+	If GUICtrlRead($FormSetupCheckCheckboxMaintenanceStatus) = $GUI_CHECKED Then
+		AdlibRegister("_CheckMaintenanceStatus", _TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesMaintenance)) * 1000)
+	EndIf
 EndFunc
 
 ; #############################################################################################################################################################
@@ -173,6 +214,9 @@ Func FormSetupButtonOKClick()
 	_SettingsWrite()
 	GUISetState(@SW_HIDE, $FormSetup)
 	GUISetState(@SW_SHOW, $FormMain)
+	If GUICtrlRead($FormSetupCheckCheckboxMaintenanceStatus) = $GUI_CHECKED Then
+		AdlibRegister("_CheckMaintenanceStatus", _TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesMaintenance)) * 1000)
+	EndIf
 EndFunc
 
 ; #############################################################################################################################################################
@@ -317,6 +361,7 @@ EndFunc
 ; #############################################################################################################################################################
 ; #############################################################################################################################################################
 Func _CheckMaintenanceStatus()
+	AdlibUnRegister("_CountdownMaintenance")
 	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
 	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
 	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
@@ -368,6 +413,8 @@ Func _CheckMaintenanceStatus()
 		Next
 		If $__iMaintenanceTimeTill <> 0 Then
 			_SetLabelStatus(0x880000 , "Host in maintenance", StringReplace(StringReplace(_SecondsToTime($__iMaintenanceTimeTill - $__dCurrentTime), "h", "h "),"m", "m "), $__sMaintenanceName)
+			$g_i_Countdown = $__iMaintenanceTimeTill
+			AdlibRegister("_CountdownMaintenance", 3000)
 		Else
 			_SetLabelStatus(0x008800 , "no active maintenance", "periods found", "")
 		EndIf
@@ -380,7 +427,16 @@ Func _CheckMaintenanceStatus()
 		_zbx_Logout( $__zbxURL, $__zbxSessionId)
 	EndIf
 EndFunc
-
+; #############################################################################################################################################################
+Func _CountdownMaintenance()
+	Local $__LocalTimeStructUTC = _Date_Time_GetSystemTime()
+	Local $__dCurrentTime = _DateDiff('s', "1970/01/01 00:00:00", _Date_Time_SystemTimeToDateTimeStr($__LocalTimeStructUTC, 1))
+	If $g_i_Countdown - $__dCurrentTime > 0 Then
+		GUICtrlSetData($FormMainLabelStatusLine2, StringReplace(StringReplace(_SecondsToTime($g_i_Countdown - $__dCurrentTime), "h", "h "),"m", "m "))
+	Else
+		_CheckMaintenanceStatus()
+	EndIf
+EndFunc
 ; #############################################################################################################################################################
 Func _TriggerInputColor()
 	GUICtrlSetData(@GUI_CtrlId,StringLeft(StringRegExpReplace(StringUpper(GUICtrlRead(@GUI_CtrlId)),"[^[01723456789ABCDEF]*", ""),6))
@@ -724,12 +780,15 @@ Func _zbx_HostGetMaintenanceIDs($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbx
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
 ;~ 	MsgBox(0, "_zbx_HostGetMaintenanceIDs", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
-	ConsoleWrite($__oReceived & @CRLF)
+;~ 	ConsoleWrite($__oReceived & @CRLF)
 	If $__oStatusCode = 200 Then
-		$__oReceived = StringReplace($__oReceived, '":"', '"|"')
-		$__oReceived = StringReplace($__oReceived, '","', '"|"')
-;~ 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
-		Local $__atemp = StringSplit($__oReceived, "|", 0)
+		$__oReceived = StringReplace($__oReceived, '":"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '","', '"§"')
+		$__oReceived = StringReplace($__oReceived, '":[{"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '"}],"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '"},{"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '":', '"§')
+		Local $__atemp = StringSplit($__oReceived, "§", 0)
 		For $i = 1 To $__atemp[0] Step 1
 			If StringInStr($__atemp[$i], "maintenanceid") > 0 Then
 				$__bSkip = True
@@ -800,7 +859,7 @@ Func _zbx_HostAddMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxNam
 EndFunc
 
 ; #############################################################################################################################################################
-Func _zbxHostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxMaintenanceId)
+Func _zbx_HostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxMaintenanceId)
 	Local $__zbxJSON = '{"jsonrpc":"2.0","method":"maintenance.delete","params":["' & $__zbxMaintenanceId & '"],"auth":"' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
 	Local $__zbxResult = 0
@@ -810,7 +869,7 @@ Func _zbxHostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxM
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbxHostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+	MsgBox(0, "_zbx_HostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -824,7 +883,7 @@ Func _zbxHostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxM
 EndFunc
 
 ; #############################################################################################################################################################
-Func _zbxHostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
+Func _zbx_HostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
 	Local $__zbxJSON = '{"jsonrpc": "2.0","method": "trigger.get","params":{"output":["triggerid","description","priority"],' & _
         '"filter":{"value":1,"hostid":"' & $__zbxHostId & '"},"sortfield":"priority","sortorder":"DESC"},"auth": "' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
@@ -843,9 +902,17 @@ Func _zbxHostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbxHostTriggerGet", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	MsgBox(0, "_zbx_HostTriggerGet", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	ConsoleWrite($__oReceived & @CRLF & @CRLF)
 	If $__oStatusCode = 200 Then
-		Local $__atemp = StringSplit($__oReceived, ",:", 0)
+		$__oReceived = StringReplace($__oReceived, '":"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '","', '"§"')
+		$__oReceived = StringReplace($__oReceived, '":[{"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '"}],"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '"},{"', '"§"')
+		$__oReceived = StringReplace($__oReceived, '":', '"§')
+		Local $__atemp = StringSplit($__oReceived, "§", 0)
+;~ 		_ArrayDisplay($__atemp)
 		For $i = 1 To $__atemp[0] Step 1
 			If StringInStr($__atemp[$i], "triggerid") > 0 Then
 				$__a_zbxHostTriggers[0][0] = $__a_zbxHostTriggers[0][0] + 1
@@ -867,7 +934,7 @@ Func _zbxHostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
 EndFunc
 
 ; #############################################################################################################################################################
-Func _zbxTriggerEventGet($__zbxURL, $__zbxSessionId, $__zbxTriggerId)
+Func _zbx_TriggerEventGet($__zbxURL, $__zbxSessionId, $__zbxTriggerId)
 	Local $__zbxJSON = '{"jsonrpc": "2.0","method": "event.get","params":{"output":"extend","select_acknowledges":"extend","objectids":"' & $__zbxTriggerId & _
 		'","sortfield":["clock","eventid"],"sortorder": "DESC","filter":{"value":1}},"auth":"' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
@@ -894,7 +961,7 @@ Func _zbxTriggerEventGet($__zbxURL, $__zbxSessionId, $__zbxTriggerId)
 EndFunc
 
 ; #############################################################################################################################################################
-Func _zbxEventAcknowledge($__zbxURL, $__zbxSessionId, $__zbxEvendId, $__zbxMessage = "ZabbixEasy")
+Func _zbx_EventAcknowledge($__zbxURL, $__zbxSessionId, $__zbxEvendId, $__zbxMessage = "ZabbixEasy")
 	Local $__zbxJSON = '{"jsonrpc":"2.0","method":"event.acknowledge","params":{"eventids": "' & $__zbxEvendId & '","message":"' & $__zbxMessage & '","action":0},"auth": "' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
 	Local $__zbxResult = 0
@@ -904,7 +971,7 @@ Func _zbxEventAcknowledge($__zbxURL, $__zbxSessionId, $__zbxEvendId, $__zbxMessa
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbxHostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+	MsgBox(0, "_zbx_HostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -1247,6 +1314,7 @@ GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 			0xE45959)
 ;~ _ReplaceEnviromentVariables("TEST")
 ;~ exit
 ; Startup
+#Region Startup
 _SettingsRead()
 ControlFocus($FormMain, "", $FormMainButtonMaintenanceSet)
 
@@ -1257,5 +1325,5 @@ EndIf
 While 1
 	Sleep(100)
 WEnd
-
+#EndRegion Startup
 
