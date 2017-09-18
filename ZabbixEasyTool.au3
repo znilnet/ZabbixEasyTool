@@ -9,8 +9,10 @@
 #include <ListBoxConstants.au3>
 #include <StaticConstants.au3>
 #include <GuiTab.au3>
-;~ #include <GuiListBox.au3>
+#include <GuiListView.au3>
 #include <Misc.au3>
+#include <GDIPlus.au3>
+#include "resources.au3"
 
 AutoItSetOption("MustDeclareVars", 1)
 Opt("GUIOnEventMode", 1)
@@ -60,6 +62,14 @@ Local $s_temp = ""
 ; Für den Countdown bei aktiver Maintenance
 Global $g_i_Countdown = 0
 
+; Trigger
+Global $g_a_zbxHostTriggers[1][5]
+$g_a_zbxHostTriggers[0][0] = 0
+
+; Tray Icon
+Global $g_ico_CurrentTrayIcon
+Global $g_Icon_green, $g_Icon_grey, $g_Icon_red, $g_Icon_TrayGreen, $g_Icon_TrayGrey, $g_Icon_TrayRed
+Global $g_Tray_Headline, $g_Tray_ShowGUI, $g_Tray_Setup, $g_Tray_Exit
 #EndRegion Variablen
 
 #Region Funktionen
@@ -73,7 +83,7 @@ Global $g_i_Countdown = 0
 ;   ##        #######  ##    ## ##    ##    ##    ####  #######  ##    ## ######## ##    ##
 ; ###############################################################################################################################################################################################
 Func FormMainClose()
-	Exit
+	GUISetState(@SW_HIDE, $FormMain)
 EndFunc
 Func FormMainMinimize()
 
@@ -101,6 +111,7 @@ Func FormMainButtonMaintenanceSetClick()
 	Local $__zbxDurationTime = _TimeToSeconds(GUICtrlRead($FormMainComboTimes))
 	If _zbx_HostAddMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxName, $__zbxDescription, $__zbxDurationTime) <> "" Then
 		Sleep(1000)
+		TrayTip("Maintenance set", $__zbxName & @CRLF & $__zbxDescription & _SecondsToTime($__zbxDurationTime),30)
 		_CheckMaintenanceStatus()
 	Else
 		GUICtrlSetBkColor($FormMainLabelStatusLine1, 0xFF0000)
@@ -138,9 +149,12 @@ Func FormMainButtonMaintenanceDeleteClick()
 		; $__aMaintenanceIds[x][4] = active_till
 	If $__aMaintenanceIds[0][0] > 0 Then
 		For $i = 1 To $__aMaintenanceIds[0][0] Step 1
+;~ 			ConsoleWrite("$i = " & $i & @CRLF)
 			If _zbx_HostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__aMaintenanceIds[$i][1]) = $__aMaintenanceIds[$i][1] Then
 				; Maintenance was deleted!
+;~ 				ConsoleWrite("Deleted: " & $__aMaintenanceIds[$i][1] & @CRLF)
 			Else
+;~ 				ConsoleWrite("Error deleting" & $__aMaintenanceIds[$i][1] & @CRLF)
 				; There was an error!
 			EndIf
 		Next
@@ -151,29 +165,80 @@ Func FormMainButtonMaintenanceDeleteClick()
 	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_ENABLE)
 	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_ENABLE)
 	GUICtrlSetState($FormMainComboTimes, $GUI_ENABLE)
+	Sleep(1000)
+	_CheckMaintenanceStatus()
 	GUISetCursor("", 1, $FormMain)
 EndFunc
 
 ; #############################################################################################################################################################
 Func FormMainButtonAcknowledgeClick()
+	GUICtrlSetState($FormMainButtonAcknowledge, $GUI_DISABLE)
 	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
 	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
 	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
 	Local $__zbxHostname = GUICtrlRead($FormSetupAPIInputHost)
 	Local $__zbxSessionId = _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
-	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
+	Local $__bSkip = False
+;~ 	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
 	;~ 	$__a_zbxHostTriggers[0][0] = 0
 	;~ 	$__a_zbxHostTriggers[0][1] = "triggerid"
 	;~ 	$__a_zbxHostTriggers[0][2] = "description"
 	;~ 	$__a_zbxHostTriggers[0][3] = "priority"
-	Local $__a_zbxHostTriggers = _zbx_HostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
-;~ 	_ArrayDisplay($__a_zbxHostTriggers)
-
-
-
+	; Schritt 1: Welcher Trigger ist markiert?
+	Local $__hListViewItem = GUICtrlRead($FormMainListViewTriggers)
+	If $__hListViewItem > 0 Then
+;~ 		_ArrayDisplay($g_a_zbxHostTriggers)
+		For $i = 1 To $g_a_zbxHostTriggers[0][0]
+			If $g_a_zbxHostTriggers[$i][4] = $__hListViewItem Then
+				Local $__a_Events = _zbx_TriggerEventGet($__zbxURL, $__zbxSessionId, $g_a_zbxHostTriggers[$i][1])
+;~ 				_ArrayDisplay($__a_Events)
+				Local $__sMessageText = _ReplaceEnviromentVariables(GUICtrlRead($FormSetupAcknowledgeEditDefaultMessage))
+				If $__sMessageText = "" Then
+					$__sMessageText = "ZabbixEasyTool - no Message by User"
+				EndIf
+				If GUICtrlRead($FormSetupAcknowledgeCheckboxNeverAsk) <> $GUI_CHECKED Then
+;~ 					MsgBox(64,"","Brauchen InputBox!")
+					;InputBox features: Title=Yes, Prompt=Yes, Default Text=Yes, Mandatory
+					AutoItSetOption("GUIOnEventMode", 0)
+					Local $FormAcknowledge = GUICreate("Acknowledge Trigger", 434, 205, -1, -1)
+					GUISetFont(10, 400, 0, "Arial")
+					Local $FormAcknowledgeButtonOK = GUICtrlCreateButton("&OK", 270, 171, 75, 25)
+					Local $FormAcknowledgeButtonCancel = GUICtrlCreateButton("&Cancel", 349, 172, 75, 25)
+					Local $FormAcknowledgeLabelMessageText = GUICtrlCreateLabel("Default Message Text", 4, 5, 130, 20)
+					Local $FormAcknowledgeEditMessage = GUICtrlCreateEdit("", 4, 29, 425, 137)
+					GUICtrlSetData($FormAcknowledgeEditMessage, $__sMessageText)
+					GUISetState(@SW_SHOW, $FormAcknowledge )
+					WinSetOnTop($FormAcknowledge, "", $WINDOWS_ONTOP)
+					Local $__nMsg
+					While 1
+						$__nMsg = GUIGetMsg()
+						Switch $__nMsg
+							Case $GUI_EVENT_CLOSE, $FormAcknowledgeButtonCancel
+								$__bSkip = True
+								ExitLoop
+							Case $FormAcknowledgeButtonOK
+								If GUICtrlRead($FormAcknowledgeEditMessage) <> "" Then
+									$__sMessageText = GUICtrlRead($FormAcknowledgeEditMessage)
+								EndIf
+								$__bSkip = False
+								ExitLoop
+						EndSwitch
+					WEnd
+					GUIDelete($FormAcknowledge)
+					AutoItSetOption("GUIOnEventMode", 1)
+				EndIf
+				For $j = 1 To $__a_Events[0] Step 1
+					Local $__result = _zbx_EventAcknowledge($__zbxURL, $__zbxSessionId, $__a_Events[$j], StringReplace($__sMessageText, @CRLF, "\n"))
+				Next
+				ExitLoop
+			EndIf
+		Next
+	EndIf
 	If $__zbxSessionId <> "" Then
 		_zbx_Logout( $__zbxURL, $__zbxSessionId)
 	EndIf
+	GUICtrlSetState($FormMainButtonAcknowledge, $GUI_ENABLE)
+	_CheckTriggerStatus()
 EndFunc
 ; #############################################################################################################################################################
 
@@ -215,7 +280,12 @@ Func FormSetupButtonOKClick()
 	GUISetState(@SW_HIDE, $FormSetup)
 	GUISetState(@SW_SHOW, $FormMain)
 	If GUICtrlRead($FormSetupCheckCheckboxMaintenanceStatus) = $GUI_CHECKED Then
+		_CheckMaintenanceStatus()
 		AdlibRegister("_CheckMaintenanceStatus", _TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesMaintenance)) * 1000)
+	EndIf
+	If GUICtrlRead($FormSetupCheckCheckboxTrigger) = $GUI_CHECKED Then
+		_CheckTriggerStatus()
+		AdlibRegister("_CheckTriggerStatus", _TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesTrigger)) * 1000)
 	EndIf
 EndFunc
 
@@ -372,6 +442,8 @@ Func _CheckMaintenanceStatus()
 		GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
 		GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
 		GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
+		_WinAPI_SetWindowTitleIcon($g_Icon_red, $FormMain)
+		$g_ico_CurrentTrayIcon = $g_Icon_TrayRed
 		Return
 	EndIf
 	_SetLabelStatus(Default , "", "Logged in ...", "")
@@ -382,6 +454,8 @@ Func _CheckMaintenanceStatus()
 		GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
 		GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
 		GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
+		_WinAPI_SetWindowTitleIcon($g_Icon_red, $FormMain)
+		$g_ico_CurrentTrayIcon = $g_Icon_TrayRed
 		Return
 	EndIf
 	_SetLabelStatus(Default , "", "Host found ..", "")
@@ -392,6 +466,8 @@ Func _CheckMaintenanceStatus()
 ;~ 	_ArrayDisplay($__aMaintenanceIds, "$__aMaintenanceIds")
 	If $__aMaintenanceIds[0][0] = 0 Then
 		_SetLabelStatus(0x008800 , "no maintenance", "periods found", "")
+		_WinAPI_SetWindowTitleIcon($g_Icon_green, $FormMain)
+		$g_ico_CurrentTrayIcon = $g_Icon_TrayGreen
 	Else
 		; there are maintenance periods, find a active one
 		Local $__LocalTimeStructUTC = _Date_Time_GetSystemTime()
@@ -413,10 +489,15 @@ Func _CheckMaintenanceStatus()
 		Next
 		If $__iMaintenanceTimeTill <> 0 Then
 			_SetLabelStatus(0x880000 , "Host in maintenance", StringReplace(StringReplace(_SecondsToTime($__iMaintenanceTimeTill - $__dCurrentTime), "h", "h "),"m", "m "), $__sMaintenanceName)
+			_WinAPI_SetWindowTitleIcon($g_Icon_red, $FormMain)
+			$g_ico_CurrentTrayIcon = $g_Icon_TrayRed
 			$g_i_Countdown = $__iMaintenanceTimeTill
 			AdlibRegister("_CountdownMaintenance", 3000)
 		Else
 			_SetLabelStatus(0x008800 , "no active maintenance", "periods found", "")
+			_WinAPI_SetWindowTitleIcon($g_Icon_green, $FormMain)
+			$g_ico_CurrentTrayIcon = $g_Icon_TrayGreen
+
 		EndIf
 
 	EndIf
@@ -427,6 +508,44 @@ Func _CheckMaintenanceStatus()
 		_zbx_Logout( $__zbxURL, $__zbxSessionId)
 	EndIf
 EndFunc
+
+; #############################################################################################################################################################
+Func _CheckTriggerStatus()
+	GUICtrlSetState($FormMainButtonAcknowledge, $GUI_DISABLE)
+	Local $__zbxURL = GUICtrlRead($FormSetupAPIInputURL)
+	Local $__zbxUser = GUICtrlRead($FormSetupAPIInputUsername)
+	Local $__zbxPassword = GUICtrlRead($FormSetupAPIInputPassword)
+	Local $__zbxHostname = GUICtrlRead($FormSetupAPIInputHost)
+	Local $__zbxSessionId = _zbx_Login( $__zbxURL, $__zbxUser, $__zbxPassword)
+	Local $__zbxHostId = _zbx_HostGetId($__zbxURL, $__zbxSessionId, $__zbxHostname)
+	;~ 	$__a_zbxHostTriggers[0][0] = 0
+	;~ 	$__a_zbxHostTriggers[0][1] = "triggerid"
+	;~ 	$__a_zbxHostTriggers[0][2] = "description"
+	;~ 	$__a_zbxHostTriggers[0][3] = "priority"
+	$g_a_zbxHostTriggers = _zbx_HostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
+	ReDim $g_a_zbxHostTriggers[ $g_a_zbxHostTriggers[0][0] + 1 ][5]
+	$g_a_zbxHostTriggers[0][4] = "ListViewItem"
+;~ 	_ArrayDisplay($__a_zbxHostTriggers)
+	_GUICtrlListView_DeleteAllItems($FormMainListViewTriggers)
+	If $g_a_zbxHostTriggers[0][0] > 0 Then
+		Local $__hex_TriggerColors[6]
+		$__hex_TriggerColors[0] = "0x" & GUICtrlRead($FormSetupTriggerInputColorNotclassified)
+		$__hex_TriggerColors[1] = "0x" & GUICtrlRead($FormSetupTriggerInputColorInformation)
+		$__hex_TriggerColors[2] = "0x" & GUICtrlRead($FormSetupTriggerInputColorWarning)
+		$__hex_TriggerColors[3] = "0x" & GUICtrlRead($FormSetupTriggerInputColorAverage)
+		$__hex_TriggerColors[4] = "0x" & GUICtrlRead($FormSetupTriggerInputColorHigh)
+		$__hex_TriggerColors[5] = "0x" & GUICtrlRead($FormSetupTriggerInputColorDisaster)
+		For $n = 1 To $g_a_zbxHostTriggers[0][0] Step 1
+			$g_a_zbxHostTriggers[$n][4] = GUICtrlCreateListViewItem($g_a_zbxHostTriggers[$n][2], $FormMainListViewTriggers)
+			GUICtrlSetBkColor($g_a_zbxHostTriggers[$n][4], $__hex_TriggerColors[ $g_a_zbxHostTriggers[$n][3] ])
+		Next
+	EndIf
+;~ 	_ArrayDisplay($__a_zbxHostTriggers)
+	If $__zbxSessionId <> "" Then
+		_zbx_Logout( $__zbxURL, $__zbxSessionId)
+	EndIf
+	GUICtrlSetState($FormMainButtonAcknowledge, $GUI_ENABLE)
+EndFunc
 ; #############################################################################################################################################################
 Func _CountdownMaintenance()
 	Local $__LocalTimeStructUTC = _Date_Time_GetSystemTime()
@@ -436,6 +555,10 @@ Func _CountdownMaintenance()
 	Else
 		_CheckMaintenanceStatus()
 	EndIf
+EndFunc
+; #############################################################################################################################################################
+Func _Exit()
+	Exit
 EndFunc
 ; #############################################################################################################################################################
 Func _TriggerInputColor()
@@ -488,6 +611,14 @@ Func _SecondsToTime($__iSec)
 	Return $__sReturn
 EndFunc   ;==>_SecondsToTime
 
+; #############################################################################################################################################################
+Func _ShowGUI()
+	GUISetState(@SW_SHOW, $FormMain)
+EndFunc
+; #############################################################################################################################################################
+Func _ShowTrayIcon()
+	_WinAPI_TraySetHIcon($g_ico_CurrentTrayIcon, $FormMain)
+EndFunc
 ; #############################################################################################################################################################
 Func _TimeToSeconds($__sTime)
 	Local $__iResult = 0
@@ -674,6 +805,96 @@ Func _SettingsWrite()
 	RegWrite("HKEY_CURRENT_USER\Software\znil.net\ZabbixEasyTool\local","", "REG_SZ", @HOUR & ":" & @MIN & ":" & @SEC & " - " & @MDAY & "." & @MON & "." & @YEAR)
 EndFunc
 
+; ###############################################################################################################################################################################################
+;======================================================================================
+; Function Name:        _WinAPI_SetWindowTitleIcon
+; Description:          Loads an image, scales it to desired width or height and creates and icon handle
+;
+; Parameters:           $sFile: image file to be loaded or bitmap handle
+;                       $hWnd:  GUI handle where the new icon should be displayed
+;                       $iW:    new image (icon) width. Default values is 32
+;                       $iH:    new image (icon) height. Default values is 32
+;
+; Requirement(s):       GDIPlus.au3, _WinAPI_GetClassLongEx() and _WinAPI_SetClassLongEx()
+; Return Value(s):      Success: HICON handle, Error: 0 (see below)
+; Error codes:          1: Code is running as x64 - not supported yet
+;                       2:  $sFile value is empty
+;                       3:  $hWnd is not a windows handle
+;                       4: filename doesn't exist or $sFile is not a valid bitmap handle
+;                       5:  unable to create image from file
+;                       6:  unable to create thumbnail from image handle
+;                       7:  unable to create HICON from bitmap handle
+;                       8:  unable to set ClassLongEx from GUI handle
+;
+; Limitation:           only x86 compatible currently
+;
+; Author(s):            UEZ, Yashied for _WinAPI_GetClassLongEx() and _WinAPI_SetClassLongEx()
+; Version:              v0.98 Build 2016-11-21 Beta
+;
+; Remarks:              When finished release icon with _WinAPI_DestroyIcon()
+;=======================================================================================
+Func _WinAPI_SetWindowTitleIcon($sFile, $hWnd, $iW = 16, $iH = 16)
+    If @AutoItX64 Then Return SetError(1, 0, 0)
+    If $sFile = "" Then Return SetError(2, 0, 0)
+    If Not IsHWnd($hWnd) Then Return SetError(3, 0, 0)
+;~  Local Const $GCL_HICON = -14, $GCL_HICONSM = -34
+    Local $hImage, $bExtHandle = False
+    If Not FileExists($sFile) Then
+        If _GDIPlus_ImageGetType($sFile) = -1 Then Return SetError(4, @error, 0)
+        $hImage = $sFile ;interpret $sFile as a bitmap handle
+        $bExtHandle = True
+    Else
+        $hImage = _GDIPlus_ImageLoadFromFile($sFile)
+        If @error Then Return SetError(5, @error, 0)
+    EndIf
+    Local Const $hImageScaled = _GDIPlus_ImageScale($hImage, $iW, $iH)
+    If @error Then Return SetError(6, @error, 0)
+    If Not $bExtHandle Then _GDIPlus_ImageDispose($hImage)
+
+    Local Const $hIconNew = _GDIPlus_HICONCreateFromBitmap($hImageScaled)
+    If @error Then
+        _GDIPlus_ImageDispose($hImageScaled)
+        Return SetError(7, @error, 0)
+    EndIf
+;~  _WinAPI_SetClassLongEx($hWnd, $GCL_HICONSM, $hIconNew)
+    _SendMessage($hWnd, $WM_SETICON, 1, $hIconNew)
+    If @error Then
+        _GDIPlus_ImageDispose($hImageScaled)
+        Return SetError(8, @error, 0)
+    EndIf
+    _GDIPlus_ImageDispose($hImageScaled)
+    Return $hIconNew
+EndFunc   ;==>_WinAPI_SetWindowTitleIcon
+; #############################################################################################################################################################
+Func _WinAPI_TraySetHIcon($hIcon, $hWnd) ;function by Mat
+    Local Const $tagNOTIFYICONDATA = _
+                    "dword Size;" & _
+                    "hwnd Wnd;" & _
+                    "uint ID;" & _
+                    "uint Flags;" & _
+                    "uint CallbackMessage;" & _
+                    "ptr Icon;" & _
+                    "wchar Tip[128];" & _
+                    "dword State;" & _
+                    "dword StateMask;" & _
+                    "wchar Info[256];" & _
+                    "uint Timeout;" & _
+                    "wchar InfoTitle[64];" & _
+                    "dword InfoFlags;" & _
+                    "dword Data1;word Data2;word Data3;byte Data4[8];" & _
+                    "ptr BalloonIcon"
+    Local Const $TRAY_ICON_GUI = WinGetHandle(AutoItWinGetTitle()), $NIM_ADD = 0, $NIM_MODIFY = 1, $NIF_MESSAGE = 1, $NIF_ICON = 2, $AUT_WM_NOTIFYICON = $WM_USER + 1, $AUT_NOTIFY_ICON_ID = 1
+    Local $tNOTIFY = DllStructCreate($tagNOTIFYICONDATA)
+    DllStructSetData($tNOTIFY, "Size", DllStructGetSize($tNOTIFY))
+    DllStructSetData($tNOTIFY, "Wnd", $TRAY_ICON_GUI)
+    DllStructSetData($tNOTIFY, "ID", $AUT_NOTIFY_ICON_ID)
+    DllStructSetData($tNOTIFY, "Icon", $hIcon)
+    DllStructSetData($tNOTIFY, "Flags", BitOR($NIF_ICON, $NIF_MESSAGE))
+    DllStructSetData($tNOTIFY, "CallbackMessage", $AUT_WM_NOTIFYICON)
+    Local $aRet = DllCall("shell32.dll", "int", "Shell_NotifyIconW", "dword", $NIM_MODIFY, "ptr", DllStructGetPtr($tNOTIFY))
+    If (@error) Then Return SetError(1, 0, 0)
+    Return $aRet[0] <> 0
+EndFunc   ;==>_Tray_SetHIcon
 ; #############################################################################################################################################################
 Func _zetRegWrite($__sRegValueName, $__sRegValue, $__bNoRead = False)
 	If $__bNoRead = False Then
@@ -869,7 +1090,7 @@ Func _zbx_HostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbx
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbx_HostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	MsgBox(0, "_zbx_HostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -884,7 +1105,7 @@ EndFunc
 
 ; #############################################################################################################################################################
 Func _zbx_HostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
-	Local $__zbxJSON = '{"jsonrpc": "2.0","method": "trigger.get","params":{"output":["triggerid","description","priority"],' & _
+	Local $__zbxJSON = '{"jsonrpc": "2.0","method": "trigger.get","params":{"withUnacknowledgedEvents":1,"output":["triggerid","description","priority"],' & _
         '"filter":{"value":1,"hostid":"' & $__zbxHostId & '"},"sortfield":"priority","sortorder":"DESC"},"auth": "' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
 	Local $__a_zbxHostTriggers[1][4]	; [0][0] = Anzahl
@@ -945,7 +1166,9 @@ Func _zbx_TriggerEventGet($__zbxURL, $__zbxSessionId, $__zbxTriggerId)
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbxHostEventGet", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	MsgBox(0, "_zbxHostEventGet", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	ConsoleWrite("$__zbxJSON:" & @CRLF & $__zbxJSON & @CRLF)
+;~ 	ConsoleWrite("$__oReceived:" & @CRLF & $__oReceived & @CRLF)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -971,7 +1194,9 @@ Func _zbx_EventAcknowledge($__zbxURL, $__zbxSessionId, $__zbxEvendId, $__zbxMess
 	$__oHTTP.Send($__zbxJSON)
 	Local $__oReceived = $__oHTTP.ResponseText
 	Local $__oStatusCode = $__oHTTP.Status
-	MsgBox(0, "_zbx_HostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	MsgBox(0, "_zbx_HostRemoveMaintenance", StringReplace($__oReceived,",", "," & @CRLF) & @CRLF & @CRLF & "Status Code: " & $__oStatusCode)
+;~ 	ConsoleWrite("$__zbxJSON:" & @CRLF & $__zbxJSON & @CRLF)
+;~ 	ConsoleWrite("$__oReceived:" & @CRLF & $__oReceived & @CRLF)
 	If $__oStatusCode = 200 Then
 		Local $__atemp = StringSplit($__oReceived, ",:", 0)
 		For $i = 1 To $__atemp[0] Step 1
@@ -1016,7 +1241,8 @@ GUICtrlSetFont($FormMainComboTimes, 12, 400, 0, "Arial")
 $FormMainButtonMaintenanceSet = GUICtrlCreateButton("Set", 152, 121, 99, 28)
 GUICtrlSetFont($FormMainButtonMaintenanceSet, 12, 400, 0, "Arial")
 GUICtrlSetOnEvent($FormMainButtonMaintenanceSet, "FormMainButtonMaintenanceSetClick")
-$FormMainListViewTriggers = GUICtrlCreateListView("", 0, 176, 404, 142)
+$FormMainListViewTriggers = GUICtrlCreateListView("Trigger Description", 0, 176, 404, 142, BitOR($GUI_SS_DEFAULT_LISTVIEW,$LVS_NOCOLUMNHEADER))
+GUICtrlSendMsg($FormMainListViewTriggers, $LVM_SETCOLUMNWIDTH, 0, 400)
 $FormMainButtonMaintenanceDelete = GUICtrlCreateButton("Delete all", 256, 121, 99, 28)
 GUICtrlSetFont($FormMainButtonMaintenanceDelete, 12, 400, 0, "Arial")
 GUICtrlSetOnEvent($FormMainButtonMaintenanceDelete, "FormMainButtonMaintenanceDeleteClick")
@@ -1315,12 +1541,52 @@ GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 			0xE45959)
 ;~ exit
 ; Startup
 #Region Startup
+_GDIPlus_Startup()
+$g_Icon_green = _GDIPlus_BitmapCreateFromMemory(_Zeasy_greenico(), False)
+$g_Icon_grey = _GDIPlus_BitmapCreateFromMemory(_Zeasy_greyico(), False)
+$g_Icon_red = _GDIPlus_BitmapCreateFromMemory(_Zeasy_redico(), False)
+;~ Global $g_Icon_green16 = _GDIPlus_BitmapCreateFromMemory(_Zeasy_green16ico(), False)
+;~ Global $g_Icon_TrayGreen = _GDIPlus_HICONCreateFromBitmap($g_Icon_green16)
+$g_Icon_TrayGreen = _GDIPlus_HICONCreateFromBitmap($g_Icon_green)
+$g_Icon_TrayGrey = _GDIPlus_HICONCreateFromBitmap($g_Icon_grey)
+$g_Icon_TrayRed = _GDIPlus_HICONCreateFromBitmap($g_Icon_red)
+
+_WinAPI_SetWindowTitleIcon($g_Icon_grey, $FormMain)
+
+AutoItSetOption("TrayOnEventMode", 1)
+AutoItSetOption("TrayAutoPause", 0)
+AutoItSetOption("TrayMenuMode", 3)
+
+
+$g_Tray_Headline = TrayCreateItem("ZabbixEasyTool")
+TrayItemSetOnEvent($g_Tray_Headline,"_ShowGUI")
+TrayCreateItem("")
+$g_Tray_ShowGUI = TrayCreateItem("Show GUI")
+TrayItemSetOnEvent($g_Tray_ShowGUI,"_ShowGUI")
+$g_Tray_Setup = TrayCreateItem("Setup")
+TrayItemSetOnEvent($g_Tray_Setup,"FormMainButtonSetupClick")
+$g_Tray_Exit = TrayCreateItem("Exit")
+TrayItemSetOnEvent($g_Tray_Exit,"_Exit")
+_WinAPI_TraySetHIcon($g_Icon_TrayGrey, $FormMain)
+TraySetToolTip("ZabbixEasyTool" & @CRLF & "Maintenance periods + Trigger")
+
+$g_ico_CurrentTrayIcon = $g_Icon_TrayGrey
+AdlibRegister("_ShowTrayIcon", 1000)
+
+
 _SettingsRead()
 ControlFocus($FormMain, "", $FormMainButtonMaintenanceSet)
 
 If GUICtrlRead($FormSetupCheckCheckboxMaintenanceStatus) = $GUI_CHECKED Then
+	_CheckMaintenanceStatus()
 	AdlibRegister("_CheckMaintenanceStatus", _TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesMaintenance)) * 1000)
 EndIf
+If GUICtrlRead($FormSetupCheckCheckboxTrigger) = $GUI_CHECKED Then
+	_CheckTriggerStatus()
+	AdlibRegister("_CheckTriggerStatus", _TimeToSeconds(GUICtrlRead($FormSetupCheckComboTimesTrigger)) * 1000)
+EndIf
+
+
 
 While 1
 	Sleep(100)

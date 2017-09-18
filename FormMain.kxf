@@ -85,11 +85,16 @@
 				<property name="Top" vt="Int16">176</property>
 				<property name="Width" vt="Int16">404</property>
 				<property name="Height" vt="Int16">142</property>
-				<property name="CtrlStyle" vt="Int32">1342373901</property>
+				<property name="CtrlStyle" vt="Int32">1342390285</property>
 				<property name="CtrlExStyle" vt="Int16">512</property>
 				<property name="Resizing" vt="Set"/>
 				<property name="Columns" vt="Collection">
-					<collection/>
+					<collection>
+						<item>
+							<property name="Caption" vt="String">Trigger Description</property>
+							<property name="Width" vt="Int16">400</property>
+						</item>
+					</collection>
 				</property>
 			</properties>
 			<components/>
