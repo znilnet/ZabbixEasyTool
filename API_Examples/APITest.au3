@@ -197,7 +197,8 @@ Func _zbxHostRemoveMaintenance($__zbxURL, $__zbxSessionId, $__zbxHostId, $__zbxM
 EndFunc
 
 Func _zbxHostTriggerGet($__zbxURL, $__zbxSessionId, $__zbxHostId)
-	Local $__zbxJSON = '{"jsonrpc": "2.0","method": "trigger.get","params":{"output":["triggerid","description","priority"],' & _
+	; Get only unacknowledged trigger with status problem
+	Local $__zbxJSON = '{"jsonrpc": "2.0","method": "trigger.get","params":{"withUnacknowledgedEvents":1,"output":["triggerid","description","priority"],' & _
         '"filter":{"value":1,"hostid":"' & $__zbxHostId & '"},"sortfield":"priority","sortorder":"DESC"},"auth": "' & $__zbxSessionId & '","id":42}'
 	Local $__oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
 	Local $__a_zbxHostTriggers[1][4]	; [0][0] = Anzahl
