@@ -68,7 +68,7 @@ $g_a_zbxHostTriggers[0][0] = 0
 
 ; Tray Icon
 Global $g_ico_CurrentTrayIcon
-Global $g_Icon_green, $g_Icon_grey, $g_Icon_red, $g_Icon_TrayGreen, $g_Icon_TrayGrey, $g_Icon_TrayRed
+Global $g_Icon_green, $g_Icon_grey, $g_Icon_red, $g_Icon_TrayGreen, $g_Icon_TrayGrey, $g_Icon_TrayRed, $g_Icon_yellow, $g_Icon_lightblue, $g_Icon_TrayYellow, $g_Icon_TrayLightblue
 Global $g_Tray_Headline, $g_Tray_ShowGUI, $g_Tray_Setup, $g_Tray_Exit
 #EndRegion Variablen
 
@@ -96,7 +96,7 @@ EndFunc
 
 ; #############################################################################################################################################################
 Func FormMainButtonMaintenanceSetClick()
-	GUISetCursor(15, 1, $FormMain)
+	;GUISetCursor(15, 1, $FormMain)
 	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
 	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
 	GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
@@ -125,13 +125,13 @@ Func FormMainButtonMaintenanceSetClick()
 	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_ENABLE)
 	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_ENABLE)
 	GUICtrlSetState($FormMainComboTimes, $GUI_ENABLE)
-	GUISetCursor("", 1, $FormMain)
+	;GUISetCursor("", 1, $FormMain)
 EndFunc
 
 
 ; #############################################################################################################################################################
 Func FormMainButtonMaintenanceDeleteClick()
-	GUISetCursor(15, 1, $FormMain)
+	;GUISetCursor(15, 1, $FormMain)
 	GUICtrlSetState($FormMainButtonMaintenanceSet, $GUI_DISABLE)
 	GUICtrlSetState($FormMainButtonMaintenanceDelete, $GUI_DISABLE)
 	GUICtrlSetState($FormMainComboTimes, $GUI_DISABLE)
@@ -167,7 +167,7 @@ Func FormMainButtonMaintenanceDeleteClick()
 	GUICtrlSetState($FormMainComboTimes, $GUI_ENABLE)
 	Sleep(1000)
 	_CheckMaintenanceStatus()
-	GUISetCursor("", 1, $FormMain)
+	;GUISetCursor("", 1, $FormMain)
 EndFunc
 
 ; #############################################################################################################################################################
@@ -1540,16 +1540,20 @@ GUICtrlSetBkColor($FormSetupTriggerLabelColorDisaster, 			0xE45959)
 ;~ _ReplaceEnviromentVariables("TEST")
 ;~ exit
 ; Startup
+
+
 #Region Startup
 _GDIPlus_Startup()
-$g_Icon_green = _GDIPlus_BitmapCreateFromMemory(_Zeasy_greenico(), False)
-$g_Icon_grey = _GDIPlus_BitmapCreateFromMemory(_Zeasy_greyico(), False)
-$g_Icon_red = _GDIPlus_BitmapCreateFromMemory(_Zeasy_redico(), False)
-;~ Global $g_Icon_green16 = _GDIPlus_BitmapCreateFromMemory(_Zeasy_green16ico(), False)
-;~ Global $g_Icon_TrayGreen = _GDIPlus_HICONCreateFromBitmap($g_Icon_green16)
+$g_Icon_green = _GDIPlus_BitmapCreateFromMemory(_Full_greenico(), False)
+$g_Icon_grey = _GDIPlus_BitmapCreateFromMemory(_Full_greyico(), False)
+$g_Icon_red = _GDIPlus_BitmapCreateFromMemory(_Full_redico(), False)
+$g_Icon_yellow = _GDIPlus_BitmapCreateFromMemory(_Full_yellowico(), False)
+$g_Icon_lightblue = _GDIPlus_BitmapCreateFromMemory(_Full_lightblueico(), False)
 $g_Icon_TrayGreen = _GDIPlus_HICONCreateFromBitmap($g_Icon_green)
 $g_Icon_TrayGrey = _GDIPlus_HICONCreateFromBitmap($g_Icon_grey)
 $g_Icon_TrayRed = _GDIPlus_HICONCreateFromBitmap($g_Icon_red)
+$g_Icon_TrayYellow = _GDIPlus_HICONCreateFromBitmap($g_Icon_yellow)
+$g_Icon_TrayLightblue = _GDIPlus_HICONCreateFromBitmap($g_Icon_lightblue)
 
 _WinAPI_SetWindowTitleIcon($g_Icon_grey, $FormMain)
 
@@ -1568,7 +1572,7 @@ TrayItemSetOnEvent($g_Tray_Setup,"FormMainButtonSetupClick")
 $g_Tray_Exit = TrayCreateItem("Exit")
 TrayItemSetOnEvent($g_Tray_Exit,"_Exit")
 _WinAPI_TraySetHIcon($g_Icon_TrayGrey, $FormMain)
-TraySetToolTip("ZabbixEasyTool" & @CRLF & "Maintenance periods + Trigger")
+TraySetToolTip("ZabbixEasyTool")
 
 $g_ico_CurrentTrayIcon = $g_Icon_TrayGrey
 AdlibRegister("_ShowTrayIcon", 1000)
