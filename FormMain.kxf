@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <object type="TAForm" name="FormMain">
 	<properties>
-		<property name="Left" vt="Int16">515</property>
-		<property name="Top" vt="Int16">372</property>
+		<property name="Left" vt="Int16">520</property>
+		<property name="Top" vt="Int16">155</property>
 		<property name="Width" vt="Int16">420</property>
-		<property name="Height" vt="Int16">352</property>
+		<property name="Height" vt="Int16">397</property>
 		<property name="Caption" vt="String">ZabbixEasyTool</property>
 		<property name="Color" vt="Ident">clBtnFace</property>
 		<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -38,7 +38,7 @@
 		<object type="TAButton" name="FormMainButtonMaintenanceDelete">
 			<properties>
 				<property name="Left" vt="Int16">256</property>
-				<property name="Top" vt="Int8">89</property>
+				<property name="Top" vt="Int8">121</property>
 				<property name="Width" vt="Int8">99</property>
 				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Delete all</property>
@@ -60,7 +60,7 @@
 		<object type="TAButton" name="FormMainButtonMaintenanceSet">
 			<properties>
 				<property name="Left" vt="Int16">152</property>
-				<property name="Top" vt="Int8">89</property>
+				<property name="Top" vt="Int8">121</property>
 				<property name="Width" vt="Int8">99</property>
 				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Set</property>
@@ -82,7 +82,7 @@
 		<object type="TAListView" name="FormMainListViewTriggers">
 			<properties>
 				<property name="Left" vt="Int8">0</property>
-				<property name="Top" vt="Int8">120</property>
+				<property name="Top" vt="Int16">176</property>
 				<property name="Width" vt="Int16">404</property>
 				<property name="Height" vt="Int16">142</property>
 				<property name="CtrlStyle" vt="Int32">1342373901</property>
@@ -97,7 +97,7 @@
 		<object type="TACombo" name="FormMainComboTimes">
 			<properties>
 				<property name="Left" vt="Int8">48</property>
-				<property name="Top" vt="Int8">90</property>
+				<property name="Top" vt="Int8">122</property>
 				<property name="Width" vt="Int8">99</property>
 				<property name="Height" vt="Int8">25</property>
 				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
@@ -108,19 +108,19 @@
 				<property name="ItemHeight" vt="Int8">18</property>
 				<property name="ParentFont" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">1</property>
-				<property name="Text" vt="String">FormMainComboTimes</property>
 				<property name="CtrlStyle" vt="Int32">1342374466</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
 				<property name="Resizing" vt="Set">DockHeight</property>
 			</properties>
 			<components/>
 		</object>
-		<object type="TALabel" name="FormMainLabelStatus">
+		<object type="TALabel" name="FormMainLabelStatusLine1">
 			<properties>
 				<property name="Left" vt="Int8">0</property>
 				<property name="Top" vt="Int8">0</property>
 				<property name="Width" vt="Int16">404</property>
 				<property name="Height" vt="Int8">44</property>
+				<property name="Cursor" vt="Ident">crHandPoint</property>
 				<property name="AutoSize" vt="False">False</property>
 				<property name="Caption" vt="String">unknown</property>
 				<property name="Color" vt="Ident">clGray</property>
@@ -143,7 +143,7 @@
 		<object type="TAButton" name="FormMainButtonAcknowledge">
 			<properties>
 				<property name="Left" vt="Int8">48</property>
-				<property name="Top" vt="Int16">265</property>
+				<property name="Top" vt="Int16">321</property>
 				<property name="Width" vt="Int8">109</property>
 				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Acknowledge</property>
@@ -165,7 +165,7 @@
 		<object type="TAButton" name="FormMainButtonSetup">
 			<properties>
 				<property name="Left" vt="Int16">246</property>
-				<property name="Top" vt="Int16">265</property>
+				<property name="Top" vt="Int16">321</property>
 				<property name="Width" vt="Int8">109</property>
 				<property name="Height" vt="Int8">28</property>
 				<property name="Caption" vt="String">Setup</property>
@@ -190,6 +190,7 @@
 				<property name="Top" vt="Int8">44</property>
 				<property name="Width" vt="Int16">404</property>
 				<property name="Height" vt="Int8">44</property>
+				<property name="Cursor" vt="Ident">crHandPoint</property>
 				<property name="AutoSize" vt="False">False</property>
 				<property name="Caption" vt="String">status</property>
 				<property name="Color" vt="Ident">clGray</property>
@@ -201,6 +202,31 @@
 				<property name="ParentColor" vt="False">False</property>
 				<property name="ParentFont" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">7</property>
+				<property name="OnClick" vt="String">FormMainLabelStatusClick</property>
+				<property name="HaveVariable" vt="False">False</property>
+				<property name="CtrlStyle" vt="Int32">1342309121</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set"/>
+			</properties>
+			<components/>
+		</object>
+		<object type="TALabel" name="FormMainLabelStatusLine3">
+			<properties>
+				<property name="Left" vt="Int8">0</property>
+				<property name="Top" vt="Int8">88</property>
+				<property name="Width" vt="Int16">404</property>
+				<property name="Height" vt="Int8">28</property>
+				<property name="Cursor" vt="Ident">crHandPoint</property>
+				<property name="AutoSize" vt="False">False</property>
+				<property name="Color" vt="Ident">clGray</property>
+				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clWhite</property>
+				<property name="Font.Height" vt="Int8">-13</property>
+				<property name="Font.Name" vt="String">Arial</property>
+				<property name="Font.Style" vt="Set"/>
+				<property name="ParentColor" vt="False">False</property>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">8</property>
 				<property name="OnClick" vt="String">FormMainLabelStatusClick</property>
 				<property name="HaveVariable" vt="False">False</property>
 				<property name="CtrlStyle" vt="Int32">1342309121</property>
